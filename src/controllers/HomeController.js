@@ -126,13 +126,15 @@ async function handlePostback(sender_psid, received_postback) {
         case 'no':
             response = { "text": "Oops, try sending another image." };
             break
+        case 'RESTART_BOT':
         case 'GET_STARTED':
             await chatbotService.handleGetStarted(sender_psid);
+            break;
         
         default:
             response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
     }
-    
+
     // Send the message to acknowledge the postback
     //callSendAPI(sender_psid, response);
 }
@@ -162,10 +164,10 @@ function callSendAPI(sender_psid, response) {
     });
 }
 
-let setUpProfile = async (req,res) => {
+let setUpProfile = async (req, res) => {
     //call profile facebook api
     let request_body = {
-        "get_started": {"payload": "GET_STARTED"},
+        "get_started": { "payload": "GET_STARTED" },
         "whitelisted_domains": ["https://p-covid-care-bot-g26.herokuapp.com/"]
     }
 
@@ -187,9 +189,52 @@ let setUpProfile = async (req,res) => {
     return res.send("Setup user profile success");
 }
 
+let setUpPersistentMenu = async (req, res) => {
+    //call profile facebook api
+    let request_body = {
+        "persistent_menu": [
+            {
+                "locale": "default",
+                "composer_input_disabled": false,
+                "call_to_actions": [
+                    {
+                        "type": "web_url",
+                        "title": "Website P-Covid Care",
+                        "url": "https://p-covid-care-bot-g26.herokuapp.com/",
+                        "webview_height_ratio": "full"
+                    },
+                    {
+                        "type": "postback",
+                        "title": "Khởi động lại bot ",
+                        "payload": "RESTART_BOT"
+                    }
+                ]
+            }
+        ]
+    }
+
+    // Send the HTTP request to the Messenger Platform
+    await request({
+        "uri": `https://graph.facebook.com/v14.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`,
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        console.log(body);
+        if (!err) {
+            console.log('Setup persistent menu success!')
+        } else {
+            console.error("Unable to send message:" + err);
+        }
+    });
+
+    return res.send("Setup persistent menu success");
+}
+
 module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
-    setUpProfile: setUpProfile
+    setUpProfile: setUpProfile,
+    setUpPersistentMenu: setUpPersistentMenu
 }
