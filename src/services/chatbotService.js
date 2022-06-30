@@ -12,7 +12,7 @@ function callSendAPI(sender_psid, response) {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "uri": "https://graph.facebook.com/v9.0/me/messages",
         "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
@@ -46,7 +46,7 @@ let getUserName = (sender_psid) => {
 let handleGetStarted = (sender_psid) => {
     return new Promise (async (resolve,reject) => {
         try{
-            let username = await chatbotService.getUsername(sender_psid);
+            let username = await getUsername(sender_psid);
             let response1 = { "text" : `Chào mừng bạn ${username} đến với P-Covid` }
 
             let response2 = sendGetStartedTemplate();
