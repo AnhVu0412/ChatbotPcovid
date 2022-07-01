@@ -206,7 +206,6 @@ let setUpPersistentMenu = async (req, res) => {
                         "type": "web_url",
                         "title": "Website P-Covid Care",
                         "url": "https://p-covid-care-bot-g26.herokuapp.com/",
-                        "webview_height_ratio": "full"
                     },
                     {
                         "type": "postback",
