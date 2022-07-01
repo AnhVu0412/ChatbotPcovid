@@ -185,6 +185,7 @@ let handleBackToMenu = async (sender_psid) => {
 }
 
 module.exports = {
+    callSendAPI: callSendAPI,
     handleGetStarted: handleGetStarted,
     handleDetailDoctor: handleDetailDoctor,
     handleBackToMenu: handleBackToMenu

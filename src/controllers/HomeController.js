@@ -240,11 +240,42 @@ let handleMakeAppointment = (req,res) => {
     return res.render('make-appointment.ejs');
 }
 
+let handlePostMakeAppointment = async (req,res) => {
+    try {
+        let customerName = "";
+        if (req.body.customerName === "") {
+            customerName = "Để trống";
+        } else customerName = req.body.customerName;
+
+        // I demo response with sample text
+        // you can check database for customer order's status
+
+        let response1 = {
+            "text": `---Thông tin của khách hàng đặt lịch---
+            \nHọ và tên: ${customerName}
+            \nĐịa chỉ email: ${req.body.email}
+            \nSố điện thoại: ${req.body.phoneNumber}
+            `
+        };
+
+        await chatbotService.callSendAPI(req.body.psid, response1);
+        
+        return res.status(200).json({
+            message: "ok"
+        });
+    } catch (e) {
+        return res.status(500).json({
+            message: "Server error"
+        });
+    }
+}
+
 module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     setUpProfile: setUpProfile,
     setUpPersistentMenu: setUpPersistentMenu,
-    handleMakeAppointment: handleMakeAppointment
+    handleMakeAppointment: handleMakeAppointment,
+    handlePostMakeAppointment: handlePostMakeAppointment
 }

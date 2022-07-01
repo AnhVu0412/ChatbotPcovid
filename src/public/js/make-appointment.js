@@ -1,6 +1,6 @@
-(function (d, s, id) {
+(function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) { return; }
+    if (d.getElementById(id)) {return;}
     js = d.createElement(s); js.id = id;
     js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
     fjs.parentNode.insertBefore(js, fjs);
@@ -9,12 +9,12 @@
 window.extAsyncInit = function () {
     // the Messenger Extensions JS SDK is done loading 
 
-    MessengerExtensions.getContext('753933095237424',
+    MessengerExtensions.getContext('5268440396534870',
         function success(thread_context) {
             // success
             //set psid to input
             $("#psid").val(thread_context.psid);
-            handleClickButtonReserveTable();
+            handleClickButtonMakeAppointment();
         },
         function error(err) {
             // error
@@ -48,8 +48,8 @@ function validateInputFields() {
 }
 
 
-function handleClickButtonReserveTable() {
-    $("#btnReserveTable").on("click", function (e) {
+function handleClickButtonMakeAppointment() {
+    $("#btnMakeAppointment").on("click", function (e) {
         let check = validateInputFields(); //return true or false
 
         let data = {
