@@ -105,10 +105,9 @@ let getStartedTemplate = () => {
 let handleDetailDoctor = (sender_psid) => {
     return new Promise (async (resolve,reject) => {
         try{
-            let response1 = getDetailDoctorTemplate();
-
+            let response2 = getDetailDoctorTemplate();
             //send text message
-            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
 
             resolve('Done');
         }catch{
@@ -164,6 +163,7 @@ let getDetailDoctorTemplate = () => {
             }
         }
     }
+    return response;
 }
 
 module.exports = {
