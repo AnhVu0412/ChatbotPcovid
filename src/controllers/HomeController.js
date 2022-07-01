@@ -133,6 +133,9 @@ async function handlePostback(sender_psid, received_postback) {
         case 'DOCTOR_DETAIL':
             await chatbotService.handleDetailDoctor(sender_psid);
             break;
+        case 'BACK_TO_MENU':
+            await chatbotService.handleBackToMenu(sender_psid);
+            break;
         default:
             response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
     }
@@ -233,10 +236,15 @@ let setUpPersistentMenu = async (req, res) => {
     return res.send("Setup persistent menu success");
 }
 
+let handleMakeAppointment = (req,res) => {
+    return res.render('make-appointment.ejs');
+}
+
 module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     setUpProfile: setUpProfile,
-    setUpPersistentMenu: setUpPersistentMenu
+    setUpPersistentMenu: setUpPersistentMenu,
+    handleMakeAppointment: handleMakeAppointment
 }

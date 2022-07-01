@@ -28,18 +28,18 @@ function callSendAPI(sender_psid, response) {
 }
 
 let getUserName = (sender_psid) => {
-    return new Promise ((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         request({
-            "uri" : `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`,
-            "method" : "GET"
-        }, (err,res,body) => {
-            if(!err){
+            "uri": `https://graph.facebook.com/${sender_psid}?fields=first_name,last_name,profile_pic&access_token=${PAGE_ACCESS_TOKEN}`,
+            "method": "GET"
+        }, (err, res, body) => {
+            if (!err) {
                 console.log(body);
                 body = JSON.parse(body);
                 let username = `${body.first_name} ${body.last_name}`;
                 resolve(username);
-            }else{
-                console.error("Unable to send message: "+err);
+            } else {
+                console.error("Unable to send message: " + err);
                 reject(err)
             }
         })
@@ -47,10 +47,10 @@ let getUserName = (sender_psid) => {
 }
 
 let handleGetStarted = (sender_psid) => {
-    return new Promise (async (resolve,reject) => {
-        try{
+    return new Promise(async (resolve, reject) => {
+        try {
             let username = await getUserName(sender_psid);
-            let response1 = { "text" : `Chào mừng bạn ${username} đến với P-Covid` }
+            let response1 = { "text": `Chào mừng bạn ${username} đến với P-Covid` }
 
             let response2 = getStartedTemplate();
 
@@ -61,7 +61,7 @@ let handleGetStarted = (sender_psid) => {
 
             await callSendAPI(sender_psid, response2);
             resolve('Done');
-        }catch{
+        } catch {
             reject('Error');
         }
     })
@@ -80,13 +80,15 @@ let getStartedTemplate = () => {
                     "buttons": [
                         {
                             "type": "postback",
-                            "title": "Chi tiết bác sĩ",    
+                            "title": "Chi tiết bác sĩ",
                             "payload": "DOCTOR_DETAIL",
                         },
                         {
-                            "type": "postback",
-                            "title": "Đặt lịch hẹn",    
-                            "payload": "MAKE_APPOINTMENT",
+                            "title": "Đặt lịch hẹn",
+                            "type": "web_url",
+                            "url": `${process.env.URL_WEB_VIEW_ORDER}`,
+                            "webview_height_ratio": "tall",
+                            "messenger_extensions": true
                         },
                         {
                             "type": "postback",
@@ -103,14 +105,14 @@ let getStartedTemplate = () => {
 }
 
 let handleDetailDoctor = (sender_psid) => {
-    return new Promise (async (resolve,reject) => {
-        try{
+    return new Promise(async (resolve, reject) => {
+        try {
             let response2 = getDetailDoctorTemplate();
             //send text message
             await callSendAPI(sender_psid, response2);
 
             resolve('Done');
-        }catch{
+        } catch {
             reject('Error');
         }
     })
@@ -123,42 +125,54 @@ let getDetailDoctorTemplate = () => {
             "payload": {
                 "template_type": "generic",
                 "elements": [
-                {
-                    "title": "Bác sĩ A",
-                    "subtitle": "Description A",
-                    "image_url": IMAGE_GET_STARTED,
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Đặt lịch hẹn",    
-                            "payload": "MAKE_APPOINTMENT",
-                        }
-                    ],
-                },
-                {
-                    "title": "Bác sĩ B",
-                    "subtitle": "Description B",
-                    "image_url": IMAGE_GET_STARTED,
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Đặt lịch hẹn",
-                            "payload": "MAKE_APPOINTMENT",
-                        }
-                    ]
-                },
-                {
-                    "title": "Bác sĩ C",
-                    "subtitle": "Description C",
-                    "image_url": IMAGE_GET_STARTED,
-                    "buttons": [
-                        {
-                            "type": "postback",
-                            "title": "Đặt lịch hẹn",
-                            "payload": "MAKE_APPOINTMENT",
-                        }
-                    ]
-                }
+                    {
+                        "title": "Bác sĩ A",
+                        "subtitle": "Description A",
+                        "image_url": IMAGE_GET_STARTED,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Xem chi tiết",
+                                "payload": "MAKE_APPOINTMENT",
+                            }
+                        ],
+                    },
+                    {
+                        "title": "Bác sĩ B",
+                        "subtitle": "Description B",
+                        "image_url": IMAGE_GET_STARTED,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Xem chi tiết",
+                                "payload": "MAKE_APPOINTMENT",
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Bác sĩ C",
+                        "subtitle": "Description C",
+                        "image_url": IMAGE_GET_STARTED,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Xem chi tiết",
+                                "payload": "MAKE_APPOINTMENT",
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Quay trở lại",
+                        "subtitle": "Quay trở lại menu chính",
+                        "image_url": IMAGE_GET_STARTED,
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "QUAY TRỞ LẠI",
+                                "payload": "BACK_TO_MENU",
+                            }
+                        ]
+                    }
                 ]
             }
         }
@@ -166,7 +180,12 @@ let getDetailDoctorTemplate = () => {
     return response;
 }
 
+let handleBackToMenu = async (sender_psid) => {
+    await getStartedTemplate(sender_psid);
+}
+
 module.exports = {
     handleGetStarted: handleGetStarted,
-    handleDetailDoctor: handleDetailDoctor
+    handleDetailDoctor: handleDetailDoctor,
+    handleBackToMenu: handleBackToMenu
 }
