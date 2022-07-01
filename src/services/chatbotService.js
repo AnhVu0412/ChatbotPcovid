@@ -2,7 +2,7 @@ import request from 'request';
 require('dotenv').config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
-const URL_WEB_VIEW_ORDER = process.env.URL_WEB_VIEW_ORDER;
+
 
 function callSendAPI(sender_psid, response) {
     // Construct the message body
@@ -87,7 +87,7 @@ let getStartedTemplate = () => {
                         {
                             "title": "Đặt lịch hẹn",
                             "type": "web_url",
-                            "url": `${URL_WEB_VIEW_ORDER}`,
+                            "url": `${process.env.URL_WEB_VIEW_ORDER}`,
                             "webview_height_ratio": "tall",
                             "messenger_extensions": true
                         },

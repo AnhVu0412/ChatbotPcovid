@@ -260,6 +260,8 @@ let handlePostMakeAppointment = async (req,res) => {
 
         await chatbotService.callSendAPI(req.body.psid, response1);
         
+        console.log(req.body);
+
         return res.status(200).json({
             message: "ok"
         });
