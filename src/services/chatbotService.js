@@ -49,7 +49,7 @@ let getUserName = (sender_psid) => {
 let handleGetStarted = (sender_psid) => {
     return new Promise (async (resolve,reject) => {
         try{
-            let username = await getUsername(sender_psid);
+            let username = await getUserName(sender_psid);
             let response1 = { "text" : `Chào mừng bạn ${username} đến với P-Covid` }
 
             let response2 = sendGetStartedTemplate();
