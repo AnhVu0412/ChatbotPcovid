@@ -1,6 +1,6 @@
 require('dotenv').config();
 import request from 'request';
-import { chatbotService } from '../services/ChatbotService';
+import chatbotService from '../services/chatbotService';
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
@@ -130,7 +130,7 @@ async function handlePostback(sender_psid, received_postback) {
         case 'GET_STARTED':
             await chatbotService.handleGetStarted(sender_psid);
             break;
-        
+
         default:
             response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
     }
