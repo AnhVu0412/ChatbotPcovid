@@ -36,7 +36,7 @@ let getUserName = (sender_psid) => {
             if(!err){
                 console.log(body);
                 body = JSON.parse(body);
-                let username = `${body.last_name} ${body.first_name}`;
+                let username = `${body.first_name} ${body.last_name}`;
                 resolve(username);
             }else{
                 console.error("Unable to send message: "+err);
@@ -52,7 +52,7 @@ let handleGetStarted = (sender_psid) => {
             let username = await getUserName(sender_psid);
             let response1 = { "text" : `Chào mừng bạn ${username} đến với P-Covid` }
 
-            let response2 = sendGetStartedTemplate();
+            let response2 = getStartedTemplate();
 
             //send text message
             await callSendAPI(sender_psid, response1);
@@ -67,7 +67,7 @@ let handleGetStarted = (sender_psid) => {
     })
 }
 
-let sendGetStartedTemplate = () => {
+let getStartedTemplate = () => {
     let response = {
         "attachment": {
             "type": "template",
@@ -78,6 +78,11 @@ let sendGetStartedTemplate = () => {
                     "subtitle": "Dưới đây là các dịch vụ của P-Covid",
                     "image_url": IMAGE_GET_STARTED,
                     "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Chi tiết bác sĩ",    
+                            "payload": "DOCTOR_DETAIL",
+                        },
                         {
                             "type": "postback",
                             "title": "Đặt lịch hẹn",    
@@ -97,6 +102,71 @@ let sendGetStartedTemplate = () => {
     return response;
 }
 
+let handleDetailDoctor = (sender_psid) => {
+    return new Promise (async (resolve,reject) => {
+        try{
+            let response1 = getDetailDoctorTemplate();
+
+            //send text message
+            await callSendAPI(sender_psid, response1);
+
+            resolve('Done');
+        }catch{
+            reject('Error');
+        }
+    })
+}
+
+let getDetailDoctorTemplate = () => {
+    let response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": [
+                {
+                    "title": "Bác sĩ A",
+                    "subtitle": "Description A",
+                    "image_url": IMAGE_GET_STARTED,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Đặt lịch hẹn",    
+                            "payload": "MAKE_APPOINTMENT",
+                        }
+                    ],
+                },
+                {
+                    "title": "Bác sĩ B",
+                    "subtitle": "Description B",
+                    "image_url": IMAGE_GET_STARTED,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Đặt lịch hẹn",
+                            "payload": "MAKE_APPOINTMENT",
+                        }
+                    ]
+                },
+                {
+                    "title": "Bác sĩ C",
+                    "subtitle": "Description C",
+                    "image_url": IMAGE_GET_STARTED,
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Đặt lịch hẹn",
+                            "payload": "MAKE_APPOINTMENT",
+                        }
+                    ]
+                }
+                ]
+            }
+        }
+    }
+}
+
 module.exports = {
     handleGetStarted: handleGetStarted,
+    handleDetailDoctor: handleDetailDoctor
 }
