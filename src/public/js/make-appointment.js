@@ -19,6 +19,10 @@ window.extAsyncInit = function () {
         function error(err) {
             // error
             console.log('Lỗi đặt bàn chat bot', err);
+
+            //run fallback
+            $("#psid").val(senderId);
+            handleClickButtonMakeAppointment();
         }
     );
 };

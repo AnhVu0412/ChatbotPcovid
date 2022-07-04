@@ -11,7 +11,7 @@ let initWebRoutes = (app) => {
     router.post('/webhook', homeController.postWebhook);
     router.get('/webhook', homeController.getWebhook);
 
-    router.get('/make-appointment', homeController.handleMakeAppointment);
+    router.get('/make-appointment/:senderId', homeController.handleMakeAppointment);
     router.post('/make-appointment-ajax',homeController.handlePostMakeAppointment);
 
     return app.use("/", router);

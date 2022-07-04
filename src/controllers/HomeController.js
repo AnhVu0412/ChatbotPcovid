@@ -236,7 +236,10 @@ let setUpPersistentMenu = async (req, res) => {
 }
 
 let handleMakeAppointment = (req,res) => {
-    return res.render('make-appointment.ejs');
+    let senderId = req.params.senderId;
+    return res.render('make-appointment.ejs', {
+        senderId: senderId
+    });
 }
 
 let handlePostMakeAppointment = async (req,res) => {

@@ -53,7 +53,7 @@ let handleGetStarted = (sender_psid) => {
             let username = await getUserName(sender_psid);
             let response1 = { "text": `Chào mừng bạn ${username} đến với P-Covid` }
 
-            let response2 = getStartedTemplate();
+            let response2 = getStartedTemplate(sender_psid);
 
             //send text message
             await callSendAPI(sender_psid, response1);
@@ -68,7 +68,7 @@ let handleGetStarted = (sender_psid) => {
     })
 }
 
-let getStartedTemplate = () => {
+let getStartedTemplate = (senderID) => {
     let response = {
         "attachment": {
             "type": "template",
@@ -87,7 +87,7 @@ let getStartedTemplate = () => {
                         {
                             "title": "Đặt lịch hẹn",
                             "type": "web_url",
-                            "url": `${process.env.URL_WEB_VIEW_ORDER}`,
+                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderID}`,
                             "webview_height_ratio": "tall",
                             "messenger_extensions": true
                         },
