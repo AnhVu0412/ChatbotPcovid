@@ -66,24 +66,29 @@ function handleClickButtonMakeAppointment() {
         if (!check) {
             //close webview
             MessengerExtensions.requestCloseBrowser(function success() {
+                callAjax(data);
                 // webview closed
             }, function error(err) {
                 // an error occurred
                 console.log(err);
-            });
-
-            //send data to node.js server 
-            $.ajax({
-                url: `${window.location.origin}/make-appointment-ajax`,
-                method: "POST",
-                data: data,
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            })
+                callAjax(data);
+                $('#customerInfor').css("display", "none");
+                $('#handleError').css("display", "block");
+            });            
         }
     });
+}
+
+function callAjax(data){
+    $.ajax({
+        url: `${window.location.origin}/make-appointment-ajax`,
+        method: "POST",
+        data: data,
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    })
 }
