@@ -89,7 +89,8 @@ let getStartedTemplate = (senderID) => {
                             "type": "web_url",
                             "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderID}`,
                             "webview_height_ratio": "tall",
-                            "messenger_extensions": true
+                            "messenger_extensions": true,
+                            //"fallback_url": `${process.env.URL_WEB_VIEW_ORDER}`
                         },
                         {
                             "type": "postback",
@@ -181,6 +182,19 @@ let getDetailDoctorTemplate = () => {
     return response;
 }
 
+let handleSendMainMenu = (sender_psid) => {
+    return new Promise(async (resolve, reject) => {
+        try{
+            let response1 = getStartedTemplate();
+            await callSendAPI(sender_psid, response1);
+
+            resolve('done');
+        }catch(e){
+            reject(e);
+        }
+    }
+}
+
 let handleBackToMenu = async (sender_psid) => {
     await getStartedTemplate(sender_psid);
 }
@@ -189,5 +203,6 @@ module.exports = {
     callSendAPI: callSendAPI,
     handleGetStarted: handleGetStarted,
     handleDetailDoctor: handleDetailDoctor,
-    handleBackToMenu: handleBackToMenu
+    handleBackToMenu: handleBackToMenu,
+    handleSendMainMenu: handleSendMainMenu
 }
