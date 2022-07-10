@@ -192,7 +192,7 @@ let handleSendMainMenu = (sender_psid) => {
         }catch(e){
             reject(e);
         }
-    }
+    })
 }
 
 let handleBackToMenu = async (sender_psid) => {
