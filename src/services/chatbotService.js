@@ -196,7 +196,7 @@ let handleSendMainMenu = (sender_psid) => {
 }
 
 let handleBackToMenu = async (sender_psid) => {
-    await getStartedTemplate(sender_psid);
+    await handleSendMainMenu(sender_psid);
 }
 
 module.exports = {
