@@ -1,5 +1,7 @@
-import request from 'request';
+const request = require('request');
 require('dotenv').config();
+const db = require('/Users/charon/CapstoneProjectBackup/backend/src/models/index.');
+
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
 
@@ -120,76 +122,73 @@ let handleDetailDoctor = (sender_psid) => {
     })
 }
 
-let getDetailDoctorTemplate = () => {
+let getDetailDoctorTemplate = async () => {
+    //get data from db
+
+    let data = await db.User.findAll({
+        where: { roleId: 'R2' },
+        attributes: {
+            exclude: ['password']
+        },
+    });
+
+    let elements = [];
+
+    if (data && data.length > 0) {
+        data.map(item => {
+            elements.push({
+                "name": item.firstName + ' ' + item.lastName,
+                "phoneNumber": item.phoneNumber,
+                "image_url": item.image,
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title": "Xem chi tiết",
+                        "payload": "MAKE_APPOINTMENT",
+                    }
+                ],
+            })
+        })
+    }
+
+    elements.push(
+        {
+            "title": "Quay trở lại",
+            "subtitle": "Quay trở lại menu chính",
+            "image_url": IMAGE_GET_STARTED,
+            "buttons": [
+                {
+                    "type": "postback",
+                    "title": "QUAY TRỞ LẠI",
+                    "payload": "BACK_TO_MENU",
+                }
+            ]
+        }
+    )
+
     let response = {
         "attachment": {
             "type": "template",
             "payload": {
                 "template_type": "generic",
-                "elements": [
-                    {
-                        "title": "Bác sĩ A",
-                        "subtitle": "Description A",
-                        "image_url": IMAGE_GET_STARTED,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem chi tiết",
-                                "payload": "MAKE_APPOINTMENT",
-                            }
-                        ],
-                    },
-                    {
-                        "title": "Bác sĩ B",
-                        "subtitle": "Description B",
-                        "image_url": IMAGE_GET_STARTED,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem chi tiết",
-                                "payload": "MAKE_APPOINTMENT",
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Bác sĩ C",
-                        "subtitle": "Description C",
-                        "image_url": IMAGE_GET_STARTED,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Xem chi tiết",
-                                "payload": "MAKE_APPOINTMENT",
-                            }
-                        ]
-                    },
-                    {
-                        "title": "Quay trở lại",
-                        "subtitle": "Quay trở lại menu chính",
-                        "image_url": IMAGE_GET_STARTED,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "QUAY TRỞ LẠI",
-                                "payload": "BACK_TO_MENU",
-                            }
-                        ]
-                    }
-                ]
+                "elements": []
             }
         }
     }
+
+    response.attachment.payload.elements = elements
+
     return response;
 }
 
 let handleSendMainMenu = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
-        try{
+        try {
             let response1 = getStartedTemplate();
             await callSendAPI(sender_psid, response1);
 
             resolve('done');
-        }catch(e){
+        } catch (e) {
             reject(e);
         }
     })
@@ -204,5 +203,6 @@ module.exports = {
     handleGetStarted: handleGetStarted,
     handleDetailDoctor: handleDetailDoctor,
     handleBackToMenu: handleBackToMenu,
-    handleSendMainMenu: handleSendMainMenu
+    handleSendMainMenu: handleSendMainMenu,
+    getDetailDoctorTemplate: getDetailDoctorTemplate
 }
