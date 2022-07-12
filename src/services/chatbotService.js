@@ -1,7 +1,6 @@
 const request = require('request');
 require('dotenv').config();
-const db = require('/Users/charon/CapstoneProjectBackup/backend/src/models/index');
-
+const db = require('../../../../CapstoneProjectBackup/backend/src/models/index');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
 
