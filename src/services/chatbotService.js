@@ -118,7 +118,7 @@ let handleDetailDoctor = (sender_psid) => {
     })
 }
 
-let getDetailDoctorTemplate = async () => {
+let getDetailDoctorTemplate = () => {
     let response = {
         "attachment": {
             "type": "template",
@@ -127,16 +127,16 @@ let getDetailDoctorTemplate = async () => {
                 "elements": [
                     {
                         "title": "GS.TS Phạm Văn Tuấn",
+                        "image_url": IMAGE_GET_STARTED,
                         "subtitle": "Y học cổ truyền",
                         "buttons": {
                             "type": "postback",
                             "title": "Xem chi tiết"
                         }
                     },
-
                     {
                         "title": "GS.TS Hoàng Đình Tùng",
-                        
+                        "image_url": IMAGE_GET_STARTED,
                         "subtitle": "Cơ xương khớp",
                         "buttons": {
                             "type": "postback",
@@ -145,13 +145,23 @@ let getDetailDoctorTemplate = async () => {
                     },
                     {
                         "title": "GS.TS Eric Pham",
-                        
+                        "image_url": IMAGE_GET_STARTED,
                         "subtitle": "Tai mũi họng",
                         "buttons": {
                             "type": "postback",
                             "title": "Xem chi tiết"
                         }
                     },
+                    {
+                        "title": "Quay trở lại",
+                        "subtitle": "",
+                        "image_url": IMAGE_GET_STARTED,
+                        "buttons": {
+                            "type": "postback",
+                            "title": "Quay trở lại",
+                            "payload": "BACK_TO_MENU"
+                        }
+                    }
                 ]
             }
         }
