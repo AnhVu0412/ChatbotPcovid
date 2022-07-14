@@ -120,62 +120,107 @@ let handleDetailDoctor = (sender_psid) => {
 }
 
 let getDetailDoctorTemplate = async () => {
-    //get data from db
+    return new Promise(async (resolve, reject) => {
+        try {
+            let response1 = {
+                "text": "P-Covid Care tự hào mang đến cho bạn đội ngũ bác sĩ hàng đầu, chất lượng và uy tín." +
+                    "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:"
+            };
 
-    let data = await db.User.findAll({
-        where: { roleId: 'R2' },
-        attributes: {
-            exclude: ['password']
-        },
-    });
+            let response2 = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+                            {
+                                "title": "GS.TS Phạm Văn Tuấn",
+                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor.jpg",
+                                "subtitle": "Y học cổ truyền",
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/2",
+                                    "webview_height_ratio": "tall"
+                                }
+                            },
 
-    let elements = [];
+                            {
+                                "title": "GS.TS Hoàng Đình Tùng",
+                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-hoang-dinh-tung.jpg",
+                                "subtitle": "Cơ xương khớp",
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/4",
+                                    "webview_height_ratio": "tall"
+                                }
+                            },
+                            {
+                                "title": "GS.TS Eric Pham",
+                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-eric-pham.jpg",
+                                "subtitle": "Tai mũi họng",
+                                "default_action": {
+                                    "type": "web_url",
+                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/5",
+                                    "webview_height_ratio": "tall"
+                                }
+                            },
 
-    if (data && data.length > 0) {
-        data.map(item => {
-            elements.push({
-                "name": item.firstName + ' ' + item.lastName,
-                "phoneNumber": item.phoneNumber,
-                "image_url": item.image,
-                "buttons": [
-                    {
-                        "type": "postback",
-                        "title": "Xem chi tiết",
-                        "payload": "MAKE_APPOINTMENT",
+                            // {
+                            //     "title": "Xem thêm thông tin:",
+                            //     "image_url": " https://bit.ly/imageToSend",
+                            //     "buttons": [
+                            //         {
+                            //             "type": "postback",
+                            //             "title": "Tất cả bác sĩ",
+                            //             "payload": "ALL_DOCTORS",
+                            //         },
+                            //         {
+                            //             "type": "postback",
+                            //             "title": "Chuyên khoa",
+                            //             "payload": "SPECIALIZATION",
+                            //         },
+                            //         {
+                            //             "type": "postback",
+                            //             "title": "Phòng khám",
+                            //             "payload": "CLINICS",
+                            //         }
+                            //     ],
+                            // }
+                        ]
                     }
-                ],
-            })
-        })
-    }
-
-    elements.push(
-        {
-            "title": "Quay trở lại",
-            "subtitle": "Quay trở lại menu chính",
-            "image_url": IMAGE_GET_STARTED,
-            "buttons": [
-                {
-                    "type": "postback",
-                    "title": "QUAY TRỞ LẠI",
-                    "payload": "BACK_TO_MENU",
                 }
-            ]
+            };
+
+            // let response3 = {
+            //     "text": "Xem thêm thông tin:",
+            //     "quick_replies": [
+            //         {
+            //             "content_type": "text",
+            //             "title": "Phòng khám",
+            //             "payload": "CLINICS",
+            //         },
+            //         {
+            //             "content_type": "text",
+            //             "title": "Chuyên khoa",
+            //             "payload": "SPECIALIZATION",
+            //         },
+            //         {
+            //             "content_type": "text",
+            //             "title": "Khám bệnh",
+            //             "payload": "KHAM_BENH",
+            //         },
+            //     ]
+            // };
+
+            await sendMessage(sender_psid, response1);
+            await sendMessage(sender_psid, response2);
+            // await sendMessage(sender_psid, response3);
+
+            resolve("ok");
+        } catch (e) {
+            reject(e);
         }
-    )
-
-    let response = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": []
-            }
-        }
-    }
-
-    response.attachment.payload.elements = elements
-
-    return response;
+    });
 }
 
 let handleSendMainMenu = (sender_psid) => {
