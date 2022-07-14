@@ -1,9 +1,7 @@
 const request = require('request');
 require('dotenv').config();
-const db = require('../../../../CapstoneProjectBackup/backend/src/models/index');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
-
 
 function callSendAPI(sender_psid, response) {
     // Construct the message body
