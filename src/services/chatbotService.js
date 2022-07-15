@@ -131,7 +131,8 @@ let getDetailDoctorTemplate = () => {
                         "subtitle": "Y học cổ truyền",
                         "buttons": {
                             "type": "postback",
-                            "title": "Xem chi tiết"
+                            "title": "Xem chi tiết",
+                            "payload": "DOCTOR_DETAIL_1"
                         }
                     },
                     {
@@ -140,7 +141,8 @@ let getDetailDoctorTemplate = () => {
                         "subtitle": "Cơ xương khớp",
                         "buttons": {
                             "type": "postback",
-                            "title": "Xem chi tiết"
+                            "title": "Xem chi tiết",
+                            "payload": "DOCTOR_DETAIL_2"
                         }
                     },
                     {
@@ -149,12 +151,12 @@ let getDetailDoctorTemplate = () => {
                         "subtitle": "Tai mũi họng",
                         "buttons": {
                             "type": "postback",
-                            "title": "Xem chi tiết"
+                            "title": "Xem chi tiết",
+                            "payload": "DOCTOR_DETAIL_3"
                         }
                     },
                     {
                         "title": "Quay trở lại",
-                        "subtitle": "",
                         "image_url": IMAGE_GET_STARTED,
                         "buttons": {
                             "type": "postback",
