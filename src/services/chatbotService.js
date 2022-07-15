@@ -118,7 +118,7 @@ let handleDetailDoctor = (sender_psid) => {
     })
 }
 
-let getDetailDoctorTemplate = () => {
+let getDetailDoctorTemplate = (sender_psid) => {
     let response = {
         "attachment": {
             "type": "template",
@@ -132,7 +132,7 @@ let getDetailDoctorTemplate = () => {
                         "buttons": {
                             "type": "postback",
                             "title": "Xem chi tiết",
-                            "payload": "DOCTOR_DETAIL_1"
+                            "payload": "DOCTOR_DETAIL"
                         }
                     },
                     {
