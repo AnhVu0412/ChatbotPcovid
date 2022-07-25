@@ -67,49 +67,86 @@ let getWebhook = (req, res) => {
     }
 }
 
-function handleMessage(sender_psid, received_message) {
-    let response;
-
-    // Checks if the message contains text
-    if (received_message.text) {
-        // Create the payload for a basic text message, which
-        // will be added to the body of our request to the Send API
-        response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+async function handleMessage(sender_psid, received_message) {
+    if (received_message.sticker_id) {
+        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
+        return;
+    }
+    //checking quick reply
+    if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
+        let payload = received_message.quick_reply.payload;
+        if (payload === "DOCTORS") {
+            await chatbotService.sendMessageReplyDoctors(sender_psid);
+            return;
         }
-    } else if (received_message.attachments) {
-        // Get the URL of the message attachment
-        let attachment_url = received_message.attachments[0].payload.url;
-        response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer.",
-                        "image_url": attachment_url,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Yes!",
-                                "payload": "yes",
-                            },
-                            {
-                                "type": "postback",
-                                "title": "No!",
-                                "payload": "no",
-                            }
-                        ],
-                    }]
-                }
-            }
-        }
+        // } else if (payload === "DOCTORS") {
+        //     await sendMessageReplyDoctors(sender_psid);
+        //     return;
+        // } else if (payload === "CLINICS") {
+        //     await sendMessageReplyClinics(sender_psid);
+        //     return;
+        // } else if (payload === "SPECIALIZATION") {
+        //     await sendMessageReplySpecialization(sender_psid);
+        //     return;
+        // }
     }
 
-    // Send the response message
-    //callSendAPI(sender_psid, response);
+
+    let name = "";
+    let entityCheck = {};
+    let arrPossibleEntity = [ 'intent', 'booking', 'info' ];
+    for (let i = 0; i < arrPossibleEntity.length; i++) {
+        let entity = firstEntity(received_message.nlp, arrPossibleEntity[i]);
+        if (entity && entity.confidence > 0.8) {
+            name = arrPossibleEntity[i];
+            entityCheck = entity;
+            break;
+        }
+    }
+    await handleEntity(name, sender_psid, entityCheck);
 }
+
+let handleEntity = async (name, sender_psid, entity) => {
+    switch (name) {
+        case "intent":
+            if (entity.value === 'doctors') {
+                await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
+                let title = "P-Covid Care";
+                let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
+                //await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+                await chatbotService.getStartedTemplate(sender_psid, "Xem thêm thông tin:");
+            }
+            if (entity.value === 'tiêu hóa') {
+                await callSendAPI(sender_psid, "Bạn đang gặp vấn đề về bệnh đường tiêu hóa, xem thêm danh sách bác sĩ chuyên khoa TIÊU HÓA.");
+                let title = "Chuyên khoa khám bệnh";
+                let subtitle = 'Thông tin bác sĩ chuyên khoa tiêu hóa';
+                //await callSendAPIv2(sender_psid, title, subtitle, TIEUHOA_IMAGE_URL, TIEUHOA_URL);
+                await chatbotService.getStartedTemplate(sender_psid, "Xem thêm thông tin:");
+            }
+            if (entity.value === 'cơ-xương-khớp') {
+                await callSendAPI(sender_psid, "Bạn đang gặp vấn đề về cơ-xương-khớp, xem thêm danh sách bác sĩ chuyên khoa CƠ XƯƠNG KHỚP.");
+                let title = "Chuyên khoa khám bệnh";
+                let subtitle = 'Thông tin bác sĩ chuyên khoa cơ-xương-khớp';
+                //await callSendAPIv2(sender_psid, title, subtitle, COXUONGKHOP_IMAGE_URL, COXUONGKHOP_URL);
+                await chatbotService.getStartedTemplate(sender_psid, "Xem thêm thông tin:");
+            }
+            break;
+        // case"booking":
+        //     await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
+        //     await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+        //     await sendMessageDefault(sender_psid, "Xem thêm thông tin:");
+        //     break;
+        // case"info":
+        //     await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
+        //     await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+        //     await sendMessageDefault(sender_psid, "Xem thêm thông tin:");
+        //     break;
+        default:
+            await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
+            await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+            await sendMessageDefault(sender_psid, "Xem thêm thông tin:");
+    }
+};
 
 // Handles messaging_postbacks events
 async function handlePostback(sender_psid, received_postback) {

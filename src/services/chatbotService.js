@@ -58,7 +58,6 @@ let handleGetStarted = (sender_psid) => {
             await callSendAPI(sender_psid, response1);
 
             //send generic template message
-
             await callSendAPI(sender_psid, response2);
             resolve('Done');
         } catch {
@@ -89,7 +88,6 @@ let getStartedTemplate = (senderID) => {
                             "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderID}`,
                             "webview_height_ratio": "tall",
                             "messenger_extensions": true,
-                            //"fallback_url": `${process.env.URL_WEB_VIEW_ORDER}`
                         },
                         {
                             "type": "postback",
@@ -104,72 +102,6 @@ let getStartedTemplate = (senderID) => {
     return response;
 }
 
-// let handleDetailDoctor = (sender_psid) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             let response2 = getDetailDoctorTemplate();
-//             //send text message
-//             await callSendAPI(sender_psid, response2);
-
-//             resolve('Done');
-//         } catch {
-//             reject('Error');
-//         }
-//     })
-// }
-
-// let getDetailDoctorTemplate = () => {
-//     let response = {
-//         "attachment": {
-//             "type": "template",
-//             "payload": {
-//                 "template_type": "generic",
-//                 "elements": [
-//                     {
-//                         "title": "GS.TS Phạm Văn Tuấn",
-//                         "image_url": IMAGE_GET_STARTED,
-//                         "subtitle": "Y học cổ truyền",
-//                         "buttons": {
-//                             "type": "postback",
-//                             "title": "Xem chi tiết",
-//                             "payload": "DOCTOR_DETAIL"
-//                         }
-//                     },
-//                     {
-//                         "title": "GS.TS Hoàng Đình Tùng",
-//                         "image_url": IMAGE_GET_STARTED,
-//                         "subtitle": "Cơ xương khớp",
-//                         "buttons": {
-//                             "type": "postback",
-//                             "title": "Xem chi tiết",
-//                             "payload": "DOCTOR_DETAIL_2"
-//                         }
-//                     },
-//                     {
-//                         "title": "GS.TS Eric Pham",
-//                         "image_url": IMAGE_GET_STARTED,
-//                         "subtitle": "Tai mũi họng",
-//                         "buttons": {
-//                             "type": "postback",
-//                             "title": "Xem chi tiết",
-//                             "payload": "DOCTOR_DETAIL_3"
-//                         }
-//                     },
-//                     {
-//                         "title": "Quay trở lại",
-//                         "image_url": IMAGE_GET_STARTED,
-//                         "buttons": {
-//                             "type": "postback",
-//                             "title": "Quay trở lại",
-//                             "payload": "BACK_TO_MENU"
-//                         }
-//                     }
-//                 ]
-//             }
-//         }
-//     }
-//     return response;
-// }
 
 let sendMessageReplyDoctors = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
