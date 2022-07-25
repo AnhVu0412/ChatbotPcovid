@@ -120,26 +120,53 @@ async function handlePostback(sender_psid, received_postback) {
 
     // Set the response based on the postback payload
     switch (payload) {
-        case 'yes':
-            response = { "text": "Thanks!" };
-            break;
-        case 'no':
-            response = { "text": "Oops, try sending another image." };
-            break
         case 'RESTART_BOT':
         case 'GET_STARTED':
             await chatbotService.handleGetStarted(sender_psid);
             break;
-        case 'DOCTOR_DETAIL':
-            await chatbotService.handleDetailDoctor(sender_psid);
-            break;
+        // case 'DOCTOR_DETAIL':
+        //     await chatbotService.handleDetailDoctor(sender_psid);
+        //     break;
         case 'BACK_TO_MENU':
             await chatbotService.handleBackToMenu(sender_psid);
+            break;
+
+        case "DOCTORS":
+            await chatbotService.sendMessageReplyDoctors(sender_psid);
+            break;
+        case "CLINICS":
+            await chatbotService.sendMessageReplyClinics(sender_psid);
+            break;
+        case "SPECIALIZATION":
+            await chatbotService.sendMessageReplySpecialization(sender_psid);
+            break;
+        case "ALL_DOCTORS":
+            await chatbotService.sendMessageAllDoctors(sender_psid);
+            break;
+        case "ALL_CLINICS":
+            await chatbotService.sendMessageAllClinics(sender_psid);
+            break;
+        case "ALL_SPECIALIZATION":
+            await chatbotService.sendMessageAllSpecializations(sender_psid);
+            break;
+        case "CUSTOMER_SERVICE":
+            await chatbotService.chatWithCustomerService(sender_psid);
+            break;
+        case "yes":
+            response = "Thanks!";
+            // Send the message to acknowledge the postback
+            await callSendAPI(sender_psid, response);
+            resolve("OK");
+            break;
+        case "no":
+            response = "Oops, try sending another image.";
+            // Send the message to acknowledge the postback
+            await callSendAPI(sender_psid, response);
+            resolve("OK");
             break;
         default:
             response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
     }
-
     // Send the message to acknowledge the postback
     //callSendAPI(sender_psid, response);
 }
@@ -235,14 +262,14 @@ let setUpPersistentMenu = async (req, res) => {
     return res.send("Setup persistent menu success");
 }
 
-let handleMakeAppointment = (req,res) => {
+let handleMakeAppointment = (req, res) => {
     let senderId = req.params.senderId;
     return res.render('make-appointment.ejs', {
         senderId: senderId
     });
 }
 
-let handlePostMakeAppointment = async (req,res) => {
+let handlePostMakeAppointment = async (req, res) => {
     try {
         let customerName = "";
         if (req.body.customerName === "") {
@@ -261,7 +288,7 @@ let handlePostMakeAppointment = async (req,res) => {
         };
 
         await chatbotService.callSendAPI(req.body.psid, response1);
-        
+
         console.log(req.body);
 
         return res.status(200).json({
