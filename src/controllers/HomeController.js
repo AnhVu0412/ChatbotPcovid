@@ -149,7 +149,7 @@ let handleEntity = async (name, sender_psid, entity) => {
         default:
             await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
             //await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
-            await sendMessageDefault(sender_psid, "Xem thêm thông tin:");
+            //await sendMessageDefault(sender_psid, "Xem thêm thông tin:");
     }
 };
 
