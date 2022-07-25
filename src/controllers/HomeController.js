@@ -67,6 +67,10 @@ let getWebhook = (req, res) => {
     }
 }
 
+let firstEntity = (nlp, name) => {
+    return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+};
+
 async function handleMessage(sender_psid, received_message) {
     if (received_message.sticker_id) {
         await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
@@ -94,7 +98,8 @@ async function handleMessage(sender_psid, received_message) {
 
     let name = "";
     let entityCheck = {};
-    let arrPossibleEntity = [ 'intent', 'booking', 'info' ];
+    //let arrPossibleEntity = [ 'intent', 'booking', 'info' ];
+    let arrPossibleEntity = [ 'intent' ];
     for (let i = 0; i < arrPossibleEntity.length; i++) {
         let entity = firstEntity(received_message.nlp, arrPossibleEntity[i]);
         if (entity && entity.confidence > 0.8) {
