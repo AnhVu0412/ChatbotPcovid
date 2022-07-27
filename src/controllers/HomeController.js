@@ -1,11 +1,9 @@
+import chatbotService from './../services/chatbotService';
 require('dotenv').config();
 import request from 'request';
-import chatbotService from '../services/chatbotService';
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
-
-
 
 let getHomePage = (req, res) => {
     return res.render('homepage.ejs');
@@ -122,64 +120,6 @@ let callSendAPI = (sender_psid, message) => {
     });
 };
 
-// let markMessageSeen = (sender_psid) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "sender_action": "mark_seen"
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve('done!')
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
-
-// let sendTypingOn = (sender_psid) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "sender_action": "typing_on"
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve('done!')
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
-
 let setUpProfile = async (req, res) => {
     //call profile facebook api
     let request_body = {
@@ -289,6 +229,7 @@ module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
+
     setUpProfile: setUpProfile,
     setUpPersistentMenu: setUpPersistentMenu,
     handleMakeAppointment: handleMakeAppointment,
