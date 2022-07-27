@@ -27,6 +27,97 @@ function callSendAPI(sender_psid, response) {
     });
 }
 
+let sendMessage = (sender_psid, response) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await markMessageSeen(sender_psid);
+            await sendTypingOn(sender_psid);
+            // Construct the message body
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "message": response,
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                console.log(body)
+                if (!err) {
+                    resolve("ok")
+                } else {
+                    reject(err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    })
+};
+
+let markMessageSeen = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "mark_seen"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let sendTypingOn = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "typing_on"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 let getUserName = (sender_psid) => {
     return new Promise((resolve, reject) => {
         request({
@@ -159,8 +250,8 @@ let sendMessageReplyDoctors = (sender_psid) => {
                 }
             };
 
-            await callSendAPI(sender_psid, response1);
-            await callSendAPI(sender_psid, response2);
+            await sendMessage(sender_psid, response1);
+            await sendMessage(sender_psid, response2);
             
             resolve("ok");
         } catch (e) {
