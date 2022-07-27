@@ -474,7 +474,6 @@ module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     setUpProfile: setUpProfile,
-    handleMessage: handleMessage,
     setUpPersistentMenu: setUpPersistentMenu,
     handleMakeAppointment: handleMakeAppointment,
     handlePostMakeAppointment: handlePostMakeAppointment
