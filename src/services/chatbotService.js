@@ -3,6 +3,70 @@ require('dotenv').config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
 
+const DOCTOR_IMAGE_URL = "https://bralowmedicalgroup.com/wp-content/uploads/2018/06/blog.jpg";
+const DOCTOR_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const BOOKING_IMAGE_URL = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const COXUONGKHOP_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
+const COXUONGKHOP_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const TIEUHOA_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
+const TIEUHOA_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const INFOWEBSITE_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
+const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
+const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
+
+let handlePostback = (sender_psid, received_postback) => {
+    let response;
+
+    // Get the payload for the postback
+    let payload = received_postback.payload;
+
+    // Set the response based on the postback payload
+    switch (payload) {
+        case 'RESTART_BOT':
+        case 'GET_STARTED':
+            handleGetStarted(sender_psid);
+            break;
+        case 'BACK_TO_MENU':
+            handleBackToMenu(sender_psid);
+            break;
+        case "DOCTORS":
+            sendMessageReplyDoctors(sender_psid);
+            break;
+        // case "CLINICS":
+        //     await sendMessageReplyClinics(sender_psid);
+        //     break;
+        // case "SPECIALIZATION":
+        //     await sendMessageReplySpecialization(sender_psid);
+        //     break;
+        // case "CUSTOMER_SERVICE":
+        //     await chatWithCustomerService(sender_psid);
+        //     break;
+        // case "yes":
+        //     response = "Thanks!";
+        //     // Send the message to acknowledge the postback
+        //     await callSendAPI(sender_psid, response);
+        //     resolve("OK");
+        //     break;
+        // case "no":
+        //     response = "Oops, try sending another image.";
+        //     // Send the message to acknowledge the postback
+        //     await callSendAPI(sender_psid, response);
+        //     resolve("OK");
+        //     break;
+        default:
+            response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
+    }
+    // Send the message to acknowledge the postback
+    //callSendAPI(sender_psid, response);
+}
+
 // function callSendAPI(sender_psid, response) {
 //     // Construct the message body
 //     let request_body = {
@@ -445,6 +509,7 @@ module.exports = {
     callSendAPI: callSendAPI,
     handleGetStarted: handleGetStarted,
     handleMessage: handleMessage,
+    handlePostback: handlePostback,
     getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,

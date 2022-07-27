@@ -5,60 +5,11 @@ import chatbotService from '../services/chatbotService';
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
 
-const DOCTOR_IMAGE_URL = "https://bralowmedicalgroup.com/wp-content/uploads/2018/06/blog.jpg";
-const DOCTOR_URL = "https://doctorcare-v1.herokuapp.com/";
 
-const BOOKING_IMAGE_URL = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
-const BOOKING_URL = "https://doctorcare-v1.herokuapp.com/";
-
-const COXUONGKHOP_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
-const COXUONGKHOP_URL = "https://doctorcare-v1.herokuapp.com/";
-
-const TIEUHOA_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
-const TIEUHOA_URL = "https://doctorcare-v1.herokuapp.com/";
-
-const INFOWEBSITE_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
-const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
-
-const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
-const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
 let getHomePage = (req, res) => {
     return res.render('homepage.ejs');
 };
-
-let postWebhook = (req, res) => {
-    let body = req.body;
-
-    // Checks this is an event from a page subscription
-    if (body.object === 'page') {
-
-        // Iterates over each entry - there may be multiple if batched
-        body.entry.forEach(function (entry) {
-            // Gets the body of the webhook event
-            // Gets the body of the webhook event
-            let webhook_event = entry.messaging[0];
-            console.log(webhook_event);
-            // Get the sender PSID
-            let sender_psid = webhook_event.sender.id;
-            console.log('Sender PSID: ' + sender_psid);
-
-            // Check if the event is a message or postback and
-            // pass the event to the appropriate handler function
-            if (webhook_event.message) {
-                chatbotService.handleMessage(sender_psid, webhook_event.message);
-            } else if (webhook_event.postback) {
-                handlePostback(sender_psid, webhook_event.postback);
-            }
-        });
-
-        // Returns a '200 OK' response to all requests
-        res.status(200).send('EVENT_RECEIVED');
-    } else {
-        // Returns a '404 Not Found' if event is not from a page subscription
-        res.sendStatus(404);
-    }
-}
 
 let getWebhook = (req, res) => {
     // Your verify token. Should be a random string.
@@ -86,52 +37,41 @@ let getWebhook = (req, res) => {
     }
 }
 
-// Handles messaging_postbacks events
-async function handlePostback (sender_psid, received_postback) {
-    let response;
+let postWebhook = (req, res) => {
+    let body = req.body;
 
-    // Get the payload for the postback
-    let payload = received_postback.payload;
+    // Checks this is an event from a page subscription
+    if (body.object === 'page') {
 
-    // Set the response based on the postback payload
-    switch (payload) {
-        case 'RESTART_BOT':
-        case 'GET_STARTED':
-            await chatbotService.handleGetStarted(sender_psid);
-            break;
-        case 'BACK_TO_MENU':
-            await chatbotService.handleBackToMenu(sender_psid);
-            break;
-        case "DOCTORS":
-            await chatbotService.sendMessageReplyDoctors(sender_psid);
-            break;
-        case "CLINICS":
-            await chatbotService.sendMessageReplyClinics(sender_psid);
-            break;
-        case "SPECIALIZATION":
-            await chatbotService.sendMessageReplySpecialization(sender_psid);
-            break;
-        case "CUSTOMER_SERVICE":
-            await chatbotService.chatWithCustomerService(sender_psid);
-            break;
-        case "yes":
-            response = "Thanks!";
-            // Send the message to acknowledge the postback
-            await callSendAPI(sender_psid, response);
-            resolve("OK");
-            break;
-        case "no":
-            response = "Oops, try sending another image.";
-            // Send the message to acknowledge the postback
-            await callSendAPI(sender_psid, response);
-            resolve("OK");
-            break;
-        default:
-            response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
+        // Iterates over each entry - there may be multiple if batched
+        body.entry.forEach(function (entry) {
+            // Gets the body of the webhook event
+            // Gets the body of the webhook event
+            let webhook_event = entry.messaging[0];
+            console.log(webhook_event);
+            // Get the sender PSID
+            let sender_psid = webhook_event.sender.id;
+            console.log('Sender PSID: ' + sender_psid);
+
+            // Check if the event is a message or postback and
+            // pass the event to the appropriate handler function
+            if (webhook_event.message) {
+                chatbotService.handleMessage(sender_psid, webhook_event.message);
+            } else if (webhook_event.postback) {
+                chatbotService.handlePostback(sender_psid, webhook_event.postback);
+            }
+        });
+
+        // Returns a '200 OK' response to all requests
+        res.status(200).send('EVENT_RECEIVED');
+    } else {
+        // Returns a '404 Not Found' if event is not from a page subscription
+        res.sendStatus(404);
     }
-    // Send the message to acknowledge the postback
-    //callSendAPI(sender_psid, response);
 }
+
+// Handles messaging_postbacks events
+
 
 //Sends response messages via the Send API
 // function callSendAPI(sender_psid, response) {
@@ -159,96 +99,86 @@ async function handlePostback (sender_psid, received_postback) {
 // }
 
 let callSendAPI = (sender_psid, message) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            await markMessageSeen(sender_psid);
-            await sendTypingOn(sender_psid);
-            // Construct the message body
-            let request_body = {
-                "recipient": {
-                    "id": sender_psid
-                },
-                "message": {
-                    "text": message
-                }
-            };
+    // Construct the message body
+    let request_body = {
+        "recipient": {
+            "id": sender_psid
+        },
+        "message": response
+    }
 
-            // Send the HTTP request to the Messenger Platform
-            request({
-                "uri": "https://graph.facebook.com/v6.0/me/messages",
-                "qs": { "access_token": PAGE_ACCESS_TOKEN },
-                "method": "POST",
-                "json": request_body
-            }, (err, res, body) => {
-                if (!err) {
-                    resolve("ok");
-                } else {
-                    reject("Unable to send message:" + err);
-                }
-            });
-        } catch (e) {
-            reject(e);
+    // Send the HTTP request to the Messenger Platform
+    request({
+        "uri": "https://graph.facebook.com/v9.0/me/messages",
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('message sent!')
+        } else {
+            console.error("Unable to send message:" + err);
         }
     });
 };
 
-let markMessageSeen = (sender_psid) => {
-    return new Promise((resolve, reject) => {
-        try {
-            let request_body = {
-                "recipient": {
-                    "id": sender_psid
-                },
-                "sender_action": "mark_seen"
-            };
+// let markMessageSeen = (sender_psid) => {
+//     return new Promise((resolve, reject) => {
+//         try {
+//             let request_body = {
+//                 "recipient": {
+//                     "id": sender_psid
+//                 },
+//                 "sender_action": "mark_seen"
+//             };
 
-            // Send the HTTP request to the Messenger Platform
-            request({
-                "uri": "https://graph.facebook.com/v6.0/me/messages",
-                "qs": { "access_token": PAGE_ACCESS_TOKEN },
-                "method": "POST",
-                "json": request_body
-            }, (err, res, body) => {
-                if (!err) {
-                    resolve('done!')
-                } else {
-                    reject("Unable to send message:" + err);
-                }
-            });
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
+//             // Send the HTTP request to the Messenger Platform
+//             request({
+//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
+//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
+//                 "method": "POST",
+//                 "json": request_body
+//             }, (err, res, body) => {
+//                 if (!err) {
+//                     resolve('done!')
+//                 } else {
+//                     reject("Unable to send message:" + err);
+//                 }
+//             });
+//         } catch (e) {
+//             reject(e);
+//         }
+//     });
+// };
 
-let sendTypingOn = (sender_psid) => {
-    return new Promise((resolve, reject) => {
-        try {
-            let request_body = {
-                "recipient": {
-                    "id": sender_psid
-                },
-                "sender_action": "typing_on"
-            };
+// let sendTypingOn = (sender_psid) => {
+//     return new Promise((resolve, reject) => {
+//         try {
+//             let request_body = {
+//                 "recipient": {
+//                     "id": sender_psid
+//                 },
+//                 "sender_action": "typing_on"
+//             };
 
-            // Send the HTTP request to the Messenger Platform
-            request({
-                "uri": "https://graph.facebook.com/v6.0/me/messages",
-                "qs": { "access_token": PAGE_ACCESS_TOKEN },
-                "method": "POST",
-                "json": request_body
-            }, (err, res, body) => {
-                if (!err) {
-                    resolve('done!')
-                } else {
-                    reject("Unable to send message:" + err);
-                }
-            });
-        } catch (e) {
-            reject(e);
-        }
-    });
-};
+//             // Send the HTTP request to the Messenger Platform
+//             request({
+//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
+//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
+//                 "method": "POST",
+//                 "json": request_body
+//             }, (err, res, body) => {
+//                 if (!err) {
+//                     resolve('done!')
+//                 } else {
+//                     reject("Unable to send message:" + err);
+//                 }
+//             });
+//         } catch (e) {
+//             reject(e);
+//         }
+//     });
+// };
 
 let setUpProfile = async (req, res) => {
     //call profile facebook api
