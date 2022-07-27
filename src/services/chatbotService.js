@@ -199,7 +199,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
         try {
             let response1 = {
                 "text": "P-Covid Care tự hào mang đến cho bạn đội ngũ bác sĩ hàng đầu, chất lượng và uy tín." +
-                    "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:"
+                "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:"
             };
 
             let response2 = {
@@ -212,37 +212,44 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "title": "GS.TS Phạm Văn Tuấn",
                                 "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor.jpg",
                                 "subtitle": "Y học cổ truyền",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/2",
-                                    "webview_height_ratio": "tall"
-                                }
+                                // "default_action": {
+                                //     "type": "web_url",
+                                //     "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/2",
+                                //     "webview_height_ratio": "tall"
+                                // }
                             },
 
                             {
                                 "title": "GS.TS Hoàng Đình Tùng",
                                 "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-hoang-dinh-tung.jpg",
                                 "subtitle": "Cơ xương khớp",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/4",
-                                    "webview_height_ratio": "tall"
-                                }
+                                // "default_action": {
+                                //     "type": "web_url",
+                                //     "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/4",
+                                //     "webview_height_ratio": "tall"
+                                // }
                             },
                             {
                                 "title": "GS.TS Eric Pham",
                                 "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-eric-pham.jpg",
                                 "subtitle": "Tai mũi họng",
-                                "default_action": {
-                                    "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/5",
-                                    "webview_height_ratio": "tall"
-                                }
+                                // "default_action": {
+                                //     "type": "web_url",
+                                //     "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/5",
+                                //     "webview_height_ratio": "tall"
+                                // }
                             },
                             {
-                                "type": "postback",
+                                
                                 "title": "Quay trở lại",
-                                "payload": "BACK_TO_MENU",
+                                "subtitle": "Quay trở lại Menu chính",
+                                "buttons": [
+                                    {
+                                        "type": "postback",
+                                        "title": "Quay trở lại",
+                                        "payload": "BACK_TO_MENU"
+                                    }
+                                ]
                             }
                             
                         ]
