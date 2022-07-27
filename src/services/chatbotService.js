@@ -3,29 +3,185 @@ require('dotenv').config();
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
 
-function callSendAPI(sender_psid, response) {
-    // Construct the message body
-    let request_body = {
-        "recipient": {
-            "id": sender_psid
-        },
-        "message": response
-    }
+// function callSendAPI(sender_psid, response) {
+//     // Construct the message body
+//     let request_body = {
+//         "recipient": {
+//             "id": sender_psid
+//         },
+//         "message": response
+//     }
 
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v9.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
+//     // Send the HTTP request to the Messenger Platform
+//     request({
+//         "uri": "https://graph.facebook.com/v9.0/me/messages",
+//         "qs": { "access_token": PAGE_ACCESS_TOKEN },
+//         "method": "POST",
+//         "json": request_body
+//     }, (err, res, body) => {
+//         if (!err) {
+//             console.log('message sent!')
+//         } else {
+//             console.error("Unable to send message:" + err);
+//         }
+//     });
+// }
+
+let callSendAPI = (sender_psid, message) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await markMessageSeen(sender_psid);
+            await sendTypingOn(sender_psid);
+            // Construct the message body
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "message": {
+                    "text": message
+                }
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve("ok");
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
         }
     });
+
+};
+
+let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await markMessageSeen(sender_psid);
+            await sendTypingOn(sender_psid);
+            let body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": title,
+                                    "image_url": imageUrl,
+                                    "subtitle": subtitle,
+                                    "default_action": {
+                                        "type": "web_url",
+                                        "url": redirectUrl,
+                                        "webview_height_ratio": "tall",
+                                    },
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": redirectUrl,
+                                            "title": "Xem chi tiết"
+                                        },
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve("ok");
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    })
+
+};
+
+let firstEntity = (nlp, name) => {
+    return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+};
+
+let handleMessage = async (sender_psid, received_message) => {
+    if (received_message.sticker_id) {
+        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
+        return;
+    }
+    //checking quick reply
+    if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
+        let payload = received_message.quick_reply.payload;
+        if (payload === "DOCTORS") {
+            await chatbotService.sendMessageReplyDoctors(sender_psid);
+            return;
+        }
+        // } else if (payload === "DOCTORS") {
+        //     await sendMessageReplyDoctors(sender_psid);
+        //     return;
+        // } else if (payload === "CLINICS") {
+        //     await sendMessageReplyClinics(sender_psid);
+        //     return;
+        // } else if (payload === "SPECIALIZATION") {
+        //     await sendMessageReplySpecialization(sender_psid);
+        //     return;
+        // }
+    }
+
+    let name = "";
+    let entityCheck = {};
+    let arrPossibleEntity = [ 'intent', 'booking', 'info' ];
+    for (let i = 0; i < arrPossibleEntity.length; i++) {
+        let entity = firstEntity(received_message.nlp, arrPossibleEntity[i]);
+        if (entity && entity.confidence > 0.8) {
+            name = arrPossibleEntity[i];
+            entityCheck = entity;
+            break;
+        }
+    }
+    await handleEntity(name, sender_psid, entityCheck);
 }
+
+let handleEntity = async (name, sender_psid, entity) => {
+    switch (name) {
+        case "intent":
+            if (entity.value === 'doctors') {
+                await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
+                let title = "P-Covid Care";
+                let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
+                await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+            }
+            break;
+        case "booking":
+            await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+        case "info":
+            await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
+            await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+        default:
+            await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
+            await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+    }
+};
 
 let sendMessage = (sender_psid, response) => {
     return new Promise(async (resolve, reject) => {
@@ -287,6 +443,7 @@ let handleBackToMenu = async (sender_psid) => {
 module.exports = {
     callSendAPI: callSendAPI,
     handleGetStarted: handleGetStarted,
+    handleMessage: handleMessage,
     getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,
