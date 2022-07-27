@@ -143,29 +143,120 @@ async function handlePostback (sender_psid, received_postback) {
 }
 
 //Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-    // Construct the message body
-    let request_body = {
-        "recipient": {
-            "id": sender_psid
-        },
-        "message": response
-    }
+// function callSendAPI(sender_psid, response) {
+//     // Construct the message body
+//     let request_body = {
+//         "recipient": {
+//             "id": sender_psid
+//         },
+//         "message": response
+//     }
 
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
+//     // Send the HTTP request to the Messenger Platform
+//     request({
+//         "uri": "https://graph.facebook.com/v2.6/me/messages",
+//         "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
+//         "method": "POST",
+//         "json": request_body
+//     }, (err, res, body) => {
+//         if (!err) {
+//             console.log('message sent!')
+//         } else {
+//             console.error("Unable to send message:" + err);
+//         }
+//     });
+// }
+let callSendAPI = (sender_psid, message) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await markMessageSeen(sender_psid);
+            await sendTypingOn(sender_psid);
+            // Construct the message body
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "message": {
+                    "text": message
+                }
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve("ok");
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
         }
     });
-}
+};
+
+let markMessageSeen = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "mark_seen"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let sendTypingOn = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "typing_on"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 let setUpProfile = async (req, res) => {
     //call profile facebook api
