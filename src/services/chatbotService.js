@@ -209,6 +209,7 @@ let handleBackToMenu = async (sender_psid) => {
 module.exports = {
     callSendAPI: callSendAPI,
     handleGetStarted: handleGetStarted,
+    getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,
     sendMessageReplyDoctors: sendMessageReplyDoctors,
