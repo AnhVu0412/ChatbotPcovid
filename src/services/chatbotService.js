@@ -157,30 +157,30 @@ let sendMessageReplyDoctors = (sender_psid) => {
                 }
             };
 
-            // let response3 = {
-            //     "text": "Xem thêm thông tin:",
-            //     "quick_replies": [
-            //         {
-            //             "content_type": "text",
-            //             "title": "Phòng khám",
-            //             "payload": "CLINICS",
-            //         },
-            //         {
-            //             "content_type": "text",
-            //             "title": "Chuyên khoa",
-            //             "payload": "SPECIALIZATION",
-            //         },
-            //         {
-            //             "content_type": "text",
-            //             "title": "Khám bệnh",
-            //             "payload": "KHAM_BENH",
-            //         },
-            //     ]
-            // };
+            let response3 = {
+                "text": "Xem thêm thông tin:",
+                "quick_replies": [
+                    {
+                        "content_type": "text",
+                        "title": "Phòng khám",
+                        "payload": "CLINICS",
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "Chuyên khoa",
+                        "payload": "SPECIALIZATION",
+                    },
+                    {
+                        "content_type": "text",
+                        "title": "Khám bệnh",
+                        "payload": "KHAM_BENH",
+                    },
+                ]
+            };
 
             await callSendAPI(sender_psid, response1);
             await callSendAPI(sender_psid, response2);
-            //await callSendAPI(sender_psid, response3);
+            await callSendAPI(sender_psid, response3);
 
             resolve("ok");
         } catch (e) {
