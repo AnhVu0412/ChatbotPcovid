@@ -44,22 +44,21 @@ let callSendAPI = (sender_psid, message) => {
 
             // Send the HTTP request to the Messenger Platform
             request({
-                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "uri": "https://graph.facebook.com/v9.0/me/messages",
                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
                 "method": "POST",
                 "json": request_body
             }, (err, res, body) => {
                 if (!err) {
-                    resolve("ok");
+                    console.log('message sent!')
                 } else {
-                    reject("Unable to send message:" + err);
+                    console.error("Unable to send message:" + err);
                 }
             });
         } catch (e) {
             reject(e);
         }
     });
-
 };
 
 let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
@@ -118,6 +117,26 @@ let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
     })
 
 };
+
+let handleGetStarted = (sender_psid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let username = await getUserName(sender_psid);
+            let response1 = { "text": `Chào mừng bạn ${username} đến với P-Covid` }
+
+            let response2 = getStartedTemplate(sender_psid);
+
+            //send text message
+            await callSendAPI(sender_psid, response1);
+
+            //send generic template message
+            await callSendAPI(sender_psid, response2);
+            resolve('Done');
+        } catch {
+            reject('Error');
+        }
+    })
+}
 
 let firstEntity = (nlp, name) => {
     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
@@ -293,25 +312,7 @@ let getUserName = (sender_psid) => {
     })
 }
 
-let handleGetStarted = (sender_psid) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            let username = await getUserName(sender_psid);
-            let response1 = { "text": `Chào mừng bạn ${username} đến với P-Covid` }
 
-            let response2 = getStartedTemplate(sender_psid);
-
-            //send text message
-            await callSendAPI(sender_psid, response1);
-
-            //send generic template message
-            await callSendAPI(sender_psid, response2);
-            resolve('Done');
-        } catch {
-            reject('Error');
-        }
-    })
-}
 
 let getStartedTemplate = (senderID) => {
     let response = {

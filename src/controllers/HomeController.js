@@ -111,15 +111,6 @@ async function handlePostback (sender_psid, received_postback) {
         case "SPECIALIZATION":
             await chatbotService.sendMessageReplySpecialization(sender_psid);
             break;
-        case "ALL_DOCTORS":
-            await chatbotService.sendMessageAllDoctors(sender_psid);
-            break;
-        case "ALL_CLINICS":
-            await chatbotService.sendMessageAllClinics(sender_psid);
-            break;
-        case "ALL_SPECIALIZATION":
-            await chatbotService.sendMessageAllSpecializations(sender_psid);
-            break;
         case "CUSTOMER_SERVICE":
             await chatbotService.chatWithCustomerService(sender_psid);
             break;
@@ -166,6 +157,7 @@ async function handlePostback (sender_psid, received_postback) {
 //         }
 //     });
 // }
+
 let callSendAPI = (sender_psid, message) => {
     return new Promise(async (resolve, reject) => {
         try {
