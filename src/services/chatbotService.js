@@ -127,7 +127,6 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                     "webview_height_ratio": "tall"
                                 }
                             },
-
                             {
                                 "title": "GS.TS Hoàng Đình Tùng",
                                 "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-hoang-dinh-tung.jpg",
@@ -148,57 +147,40 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                     "webview_height_ratio": "tall"
                                 }
                             },
-
                             {
-                                "title": "Xem thêm thông tin:",
-                                "image_url": " https://bit.ly/imageToSend",
-                                "buttons": [
-                                    {
-                                        "type": "postback",
-                                        "title": "Tất cả bác sĩ",
-                                        "payload": "ALL_DOCTORS",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Chuyên khoa",
-                                        "payload": "SPECIALIZATION",
-                                    },
-                                    {
-                                        "type": "postback",
-                                        "title": "Phòng khám",
-                                        "payload": "CLINICS",
-                                    }
-                                ],
+                                "type": "postback",
+                                "title": "Quay trở lại",
+                                "payload": "BACK_TO_MENU",
                             }
                         ]
                     }
                 }
             };
 
-            let response3 = {
-                "text": "Xem thêm thông tin:",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Phòng khám",
-                        "payload": "CLINICS",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Chuyên khoa",
-                        "payload": "SPECIALIZATION",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Khám bệnh",
-                        "payload": "KHAM_BENH",
-                    },
-                ]
-            };
+            // let response3 = {
+            //     "text": "Xem thêm thông tin:",
+            //     "quick_replies": [
+            //         {
+            //             "content_type": "text",
+            //             "title": "Phòng khám",
+            //             "payload": "CLINICS",
+            //         },
+            //         {
+            //             "content_type": "text",
+            //             "title": "Chuyên khoa",
+            //             "payload": "SPECIALIZATION",
+            //         },
+            //         {
+            //             "content_type": "text",
+            //             "title": "Khám bệnh",
+            //             "payload": "KHAM_BENH",
+            //         },
+            //     ]
+            // };
 
             await callSendAPI(sender_psid, response1);
             await callSendAPI(sender_psid, response2);
-            await callSendAPI(sender_psid, response3);
+            //await callSendAPI(sender_psid, response3);
 
             resolve("ok");
         } catch (e) {
@@ -227,9 +209,7 @@ let handleBackToMenu = async (sender_psid) => {
 module.exports = {
     callSendAPI: callSendAPI,
     handleGetStarted: handleGetStarted,
-    //handleDetailDoctor: handleDetailDoctor,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,
-    //getDetailDoctorTemplate: getDetailDoctorTemplate,
     sendMessageReplyDoctors: sendMessageReplyDoctors,
 }
