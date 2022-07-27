@@ -123,7 +123,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "subtitle": "Y học cổ truyền",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/2",
+                                    "url": "https://bookingcare.vn/bac-si-chuyen-khoa-ii-tran-minh-khuyen-d1466.html",
                                     "webview_height_ratio": "tall"
                                 }
                             },
@@ -133,7 +133,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "subtitle": "Cơ xương khớp",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/4",
+                                    "url": "https://bookingcare.vn/bac-si-chuyen-khoa-ii-tran-minh-khuyen-d1466.html",
                                     "webview_height_ratio": "tall"
                                 }
                             },
@@ -143,7 +143,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "subtitle": "Tai mũi họng",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/5",
+                                    "url": "https://bookingcare.vn/bac-si-chuyen-khoa-ii-tran-minh-khuyen-d1466.html",
                                     "webview_height_ratio": "tall"
                                 }
                             },
