@@ -119,7 +119,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                         "elements": [
                             {
                                 "title": "GS.TS Phạm Văn Tuấn",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor.jpg",
+                                "image_url": IMAGE_GET_STARTED,
                                 "subtitle": "Y học cổ truyền",
                                 "default_action": {
                                     "type": "web_url",
@@ -129,7 +129,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                             },
                             {
                                 "title": "GS.TS Hoàng Đình Tùng",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-hoang-dinh-tung.jpg",
+                                "image_url": IMAGE_GET_STARTED,
                                 "subtitle": "Cơ xương khớp",
                                 "default_action": {
                                     "type": "web_url",
@@ -139,7 +139,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                             },
                             {
                                 "title": "GS.TS Eric Pham",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-eric-pham.jpg",
+                                "image_url": IMAGE_GET_STARTED,
                                 "subtitle": "Tai mũi họng",
                                 "default_action": {
                                     "type": "web_url",
