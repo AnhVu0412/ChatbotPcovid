@@ -106,16 +106,17 @@ let getStartedTemplate = (senderID) => {
 let sendMessageReplyDoctors = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let response1 = {
-                "text": "P-Covid Care tự hào mang đến cho bạn đội ngũ bác sĩ hàng đầu, chất lượng và uy tín." +
-                    "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:"
-            };
+            // let response1 = {
+                
+            // };
 
-            let response2 = {
+            let response1 = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
+                        "text": "P-Covid Care tự hào mang đến cho bạn đội ngũ bác sĩ hàng đầu, chất lượng và uy tín." +
+                        "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:",
                         "elements": [
                             {
                                 "title": "GS.TS Phạm Văn Tuấn",
@@ -157,30 +158,30 @@ let sendMessageReplyDoctors = (sender_psid) => {
                 }
             };
 
-            let response3 = {
-                "text": "Xem thêm thông tin:",
-                "quick_replies": [
-                    {
-                        "content_type": "text",
-                        "title": "Phòng khám",
-                        "payload": "CLINICS",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Chuyên khoa",
-                        "payload": "SPECIALIZATION",
-                    },
-                    {
-                        "content_type": "text",
-                        "title": "Khám bệnh",
-                        "payload": "KHAM_BENH",
-                    },
-                ]
-            };
+            // let response3 = {
+            //     "text": "Xem thêm thông tin:",
+            //     "quick_replies": [
+            //         {
+            //             "content_type": "text",
+            //             "title": "Phòng khám",
+            //             "payload": "CLINICS",
+            //         },
+            //         {
+            //             "content_type": "text",
+            //             "title": "Chuyên khoa",
+            //             "payload": "SPECIALIZATION",
+            //         },
+            //         {
+            //             "content_type": "text",
+            //             "title": "Khám bệnh",
+            //             "payload": "KHAM_BENH",
+            //         },
+            //     ]
+            // };
 
             await callSendAPI(sender_psid, response1);
-            await callSendAPI(sender_psid, response2);
-            await callSendAPI(sender_psid, response3);
+            //await callSendAPI(sender_psid, response2);
+            //await callSendAPI(sender_psid, response3);
 
             resolve("ok");
         } catch (e) {
