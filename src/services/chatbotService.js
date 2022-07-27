@@ -21,7 +21,7 @@ const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
 const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
 const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
-let handlePostback = (sender_psid, received_postback) => {
+let handlePostback = async (sender_psid, received_postback) => {
     let response;
 
     // Get the payload for the postback
@@ -31,13 +31,13 @@ let handlePostback = (sender_psid, received_postback) => {
     switch (payload) {
         case 'RESTART_BOT':
         case 'GET_STARTED':
-            handleGetStarted(sender_psid);
+            await handleGetStarted(sender_psid);
             break;
         case 'BACK_TO_MENU':
-            handleBackToMenu(sender_psid);
+            await handleBackToMenu(sender_psid);
             break;
         case "DOCTORS":
-            sendMessageReplyDoctors(sender_psid);
+            await sendMessageReplyDoctors(sender_psid);
             break;
         // case "CLINICS":
         //     await sendMessageReplyClinics(sender_psid);
@@ -48,18 +48,18 @@ let handlePostback = (sender_psid, received_postback) => {
         // case "CUSTOMER_SERVICE":
         //     await chatWithCustomerService(sender_psid);
         //     break;
-        // case "yes":
-        //     response = "Thanks!";
-        //     // Send the message to acknowledge the postback
-        //     await callSendAPI(sender_psid, response);
-        //     resolve("OK");
-        //     break;
-        // case "no":
-        //     response = "Oops, try sending another image.";
-        //     // Send the message to acknowledge the postback
-        //     await callSendAPI(sender_psid, response);
-        //     resolve("OK");
-        //     break;
+        case "yes":
+            response = "Thanks!";
+            // Send the message to acknowledge the postback
+            await callSendAPI(sender_psid, response);
+            resolve("OK");
+            break;
+        case "no":
+            response = "Oops, try sending another image.";
+            // Send the message to acknowledge the postback
+            await callSendAPI(sender_psid, response);
+            resolve("OK");
+            break;
         default:
             response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
     }
