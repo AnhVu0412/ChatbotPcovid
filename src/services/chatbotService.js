@@ -106,45 +106,45 @@ let getStartedTemplate = (senderID) => {
 let sendMessageReplyDoctors = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // let response1 = {
-            //     "text": "P-Covid Care tự hào mang đến cho bạn đội ngũ bác sĩ hàng đầu, chất lượng và uy tín." +
-            //             "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:",
-            // };
-
             let response1 = {
+                "text": "P-Covid Care tự hào mang đến cho bạn đội ngũ bác sĩ hàng đầu, chất lượng và uy tín." +
+                    "\n\nMột số bác sĩ tiêu biểu trên P-Covid Care:"
+            };
+
+            let response2 = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
-                        
                         "elements": [
                             {
                                 "title": "GS.TS Phạm Văn Tuấn",
-                                "image_url": IMAGE_GET_STARTED,
+                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor.jpg",
                                 "subtitle": "Y học cổ truyền",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "https://bookingcare.vn/bac-si-chuyen-khoa-ii-tran-minh-khuyen-d1466.html",
+                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/2",
                                     "webview_height_ratio": "tall"
                                 }
                             },
+
                             {
                                 "title": "GS.TS Hoàng Đình Tùng",
-                                "image_url": IMAGE_GET_STARTED,
+                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-hoang-dinh-tung.jpg",
                                 "subtitle": "Cơ xương khớp",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "https://bookingcare.vn/bac-si-chuyen-khoa-ii-tran-minh-khuyen-d1466.html",
+                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/4",
                                     "webview_height_ratio": "tall"
                                 }
                             },
                             {
                                 "title": "GS.TS Eric Pham",
-                                "image_url": IMAGE_GET_STARTED,
+                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-eric-pham.jpg",
                                 "subtitle": "Tai mũi họng",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "https://bookingcare.vn/bac-si-chuyen-khoa-ii-tran-minh-khuyen-d1466.html",
+                                    "url": "https://doctorcare-v1.herokuapp.com/detail/doctor/5",
                                     "webview_height_ratio": "tall"
                                 }
                             },
@@ -153,36 +153,15 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "title": "Quay trở lại",
                                 "payload": "BACK_TO_MENU",
                             }
+                            
                         ]
                     }
                 }
             };
 
-            // let response3 = {
-            //     "text": "Xem thêm thông tin:",
-            //     "quick_replies": [
-            //         {
-            //             "content_type": "text",
-            //             "title": "Phòng khám",
-            //             "payload": "CLINICS",
-            //         },
-            //         {
-            //             "content_type": "text",
-            //             "title": "Chuyên khoa",
-            //             "payload": "SPECIALIZATION",
-            //         },
-            //         {
-            //             "content_type": "text",
-            //             "title": "Khám bệnh",
-            //             "payload": "KHAM_BENH",
-            //         },
-            //     ]
-            // };
-
             await callSendAPI(sender_psid, response1);
-            //await callSendAPI(sender_psid, response2);
-            //await callSendAPI(sender_psid, response3);
-
+            await callSendAPI(sender_psid, response2);
+            
             resolve("ok");
         } catch (e) {
             reject(e);
