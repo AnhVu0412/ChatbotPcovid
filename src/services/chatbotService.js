@@ -21,54 +21,7 @@ const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
 const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
 const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
-let handlePostback = async (sender_psid, received_postback) => {
-    return new Promise(async (resolve, reject) => {
-        let response;
 
-        // Get the payload for the postback
-        let payload = received_postback.payload;
-
-        // Set the response based on the postback payload
-        switch (payload) {
-            case 'RESTART_BOT':
-            case 'GET_STARTED':
-                await handleGetStarted(sender_psid);
-                break;
-            case 'BACK_TO_MENU':
-                await handleBackToMenu(sender_psid);
-                break;
-            case "DOCTORS":
-                await sendMessageReplyDoctors(sender_psid);
-                break;
-            // case "CLINICS":
-            //     await sendMessageReplyClinics(sender_psid);
-            //     break;
-            // case "SPECIALIZATION":
-            //     await sendMessageReplySpecialization(sender_psid);
-            //     break;
-            // case "CUSTOMER_SERVICE":
-            //     await chatWithCustomerService(sender_psid);
-            //     break;
-            case "yes":
-                response = "Thanks!";
-                // Send the message to acknowledge the postback
-                await callSendAPI(sender_psid, response);
-                resolve("OK");
-                break;
-            case "no":
-                response = "Oops, try sending another image.";
-                // Send the message to acknowledge the postback
-                await callSendAPI(sender_psid, response);
-                resolve("OK");
-                break;
-            default:
-                response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
-        }
-
-        // Send the message to acknowledge the postback
-        //callSendAPI(sender_psid, response);
-    })
-}
 // function callSendAPI(sender_psid, response) {
 //     // Construct the message body
 //     let request_body = {
@@ -110,7 +63,7 @@ let callSendAPI = (sender_psid, message) => {
 
             // Send the HTTP request to the Messenger Platform
             request({
-                "uri": "https://graph.facebook.com/v2.6/me/messages",
+                "uri": "https://graph.facebook.com/v9.0/me/messages",
                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
                 "method": "POST",
                 "json": request_body
@@ -207,44 +160,6 @@ let handleGetStarted = (sender_psid) => {
 let firstEntity = (nlp, name) => {
     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 };
-
-let handleMessage = async (sender_psid, received_message) => {
-    if (received_message.sticker_id) {
-        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
-        return;
-    }
-    //checking quick reply
-    if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
-        let payload = received_message.quick_reply.payload;
-        if (payload === "DOCTORS") {
-            await chatbotService.sendMessageReplyDoctors(sender_psid);
-            return;
-        }
-        // } else if (payload === "DOCTORS") {
-        //     await sendMessageReplyDoctors(sender_psid);
-        //     return;
-        // } else if (payload === "CLINICS") {
-        //     await sendMessageReplyClinics(sender_psid);
-        //     return;
-        // } else if (payload === "SPECIALIZATION") {
-        //     await sendMessageReplySpecialization(sender_psid);
-        //     return;
-        // }
-    }
-
-    let name = "";
-    let entityCheck = {};
-    let arrPossibleEntity = ['intent', 'booking', 'info'];
-    for (let i = 0; i < arrPossibleEntity.length; i++) {
-        let entity = firstEntity(received_message.nlp, arrPossibleEntity[i]);
-        if (entity && entity.confidence > 0.8) {
-            name = arrPossibleEntity[i];
-            entityCheck = entity;
-            break;
-        }
-    }
-    await handleEntity(name, sender_psid, entityCheck);
-}
 
 let handleEntity = async (name, sender_psid, entity) => {
     switch (name) {
@@ -506,9 +421,9 @@ let handleBackToMenu = async (sender_psid) => {
 
 module.exports = {
     handleGetStarted: handleGetStarted,
-    handlePostback: handlePostback,
+    firstEntity: firstEntity,
     callSendAPI: callSendAPI,
-    handleMessage: handleMessage,
+    handleEntity: handleEntity,
     getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,

@@ -35,6 +35,7 @@ let getWebhook = (req, res) => {
     }
 }
 
+
 let postWebhook = (req, res) => {
     let body = req.body;
 
@@ -54,9 +55,9 @@ let postWebhook = (req, res) => {
             // Check if the event is a message or postback and
             // pass the event to the appropriate handler function
             if (webhook_event.message) {
-                chatbotService.handleMessage(sender_psid, webhook_event.message);
+                handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
-                chatbotService.handlePostback(sender_psid, webhook_event.postback);
+                handlePostback(sender_psid, webhook_event.postback);
             }
         });
         // Returns a '200 OK' response to all requests
@@ -68,7 +69,92 @@ let postWebhook = (req, res) => {
 }
 
 // Handles messaging_postbacks events
+let handlePostback = async (sender_psid, received_postback) => {
+    return new Promise(async (resolve, reject) => {
+        let response;
 
+        // Get the payload for the postback
+        let payload = received_postback.payload;
+
+        // Set the response based on the postback payload
+        switch (payload) {
+            case 'RESTART_BOT':
+            case 'GET_STARTED':
+                await handleGetStarted(sender_psid);
+                break;
+            case 'BACK_TO_MENU':
+                await handleBackToMenu(sender_psid);
+                break;
+            case "DOCTORS":
+                await sendMessageReplyDoctors(sender_psid);
+                break;
+            // case "CLINICS":
+            //     await sendMessageReplyClinics(sender_psid);
+            //     break;
+            // case "SPECIALIZATION":
+            //     await sendMessageReplySpecialization(sender_psid);
+            //     break;
+            // case "CUSTOMER_SERVICE":
+            //     await chatWithCustomerService(sender_psid);
+            //     break;
+            case "yes":
+                response = "Thanks!";
+                // Send the message to acknowledge the postback
+                await callSendAPI(sender_psid, response);
+                resolve("OK");
+                break;
+            case "no":
+                response = "Oops, try sending another image.";
+                // Send the message to acknowledge the postback
+                await callSendAPI(sender_psid, response);
+                resolve("OK");
+                break;
+            default:
+                response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
+        }
+
+        // Send the message to acknowledge the postback
+        //callSendAPI(sender_psid, response);
+    })
+}
+
+let handleMessage = async (sender_psid, received_message) => {
+    if (received_message.sticker_id) {
+        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
+        return;
+    }
+    //checking quick reply
+    if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
+        let payload = received_message.quick_reply.payload;
+        if (payload === "DOCTORS") {
+            await chatbotService.sendMessageReplyDoctors(sender_psid);
+            return;
+        }
+        // } else if (payload === "DOCTORS") {
+        //     await sendMessageReplyDoctors(sender_psid);
+        //     return;
+        // } else if (payload === "CLINICS") {
+        //     await sendMessageReplyClinics(sender_psid);
+        //     return;
+        // } else if (payload === "SPECIALIZATION") {
+        //     await sendMessageReplySpecialization(sender_psid);
+        //     return;
+        // }
+    }
+
+    let name = "";
+    let entityCheck = {};
+    let arrPossibleEntity = ['intent', 'booking', 'info'];
+    for (let i = 0; i < arrPossibleEntity.length; i++) {
+        let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
+        if (entity && entity.confidence > 0.8) {
+            name = arrPossibleEntity[i];
+            entityCheck = entity;
+            break;
+        }
+    }
+    await chatbotService.handleEntity(name, sender_psid, entityCheck);
+}
 
 //Sends response messages via the Send API
 // function callSendAPI(sender_psid, response) {
@@ -206,7 +292,7 @@ module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
-
+    handlePostback: handlePostback,
     setUpProfile: setUpProfile,
     setUpPersistentMenu: setUpPersistentMenu,
     handleMakeAppointment: handleMakeAppointment,
