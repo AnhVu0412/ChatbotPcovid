@@ -59,7 +59,6 @@ let postWebhook = (req, res) => {
                 chatbotService.handlePostback(sender_psid, webhook_event.postback);
             }
         });
-
         // Returns a '200 OK' response to all requests
         res.status(200).send('EVENT_RECEIVED');
     } else {
@@ -96,29 +95,7 @@ let postWebhook = (req, res) => {
 //     });
 // }
 
-let callSendAPI = (sender_psid, message) => {
-    // Construct the message body
-    let request_body = {
-        "recipient": {
-            "id": sender_psid
-        },
-        "message": response
-    }
 
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v9.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
-};
 
 let setUpProfile = async (req, res) => {
     //call profile facebook api
