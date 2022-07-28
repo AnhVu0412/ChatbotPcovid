@@ -54,7 +54,7 @@ let postWebhook = (req, res) => {
             if (webhook_event.message) {
                 handleMessage(sender_psid, webhook_event.message);
             } else if (webhook_event.postback) {
-                handlePostback(sender_psid, webhook_event.postback);
+                handlePostBack(sender_psid, webhook_event.postback);
             }
         });
         // Returns a '200 OK' response to all requests
@@ -66,7 +66,7 @@ let postWebhook = (req, res) => {
 }
 
 // Handles messaging_postbacks events
-let handlePostback = async (sender_psid, received_postback) => {
+let handlePostBack = async (sender_psid, received_postback) => {
     return new Promise(async (resolve, reject) => {
         let response;
 
@@ -170,6 +170,7 @@ function callSendAPI(sender_psid, response) {
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
+        console.log(body);
         if (!err) {
             console.log('message sent!')
         } else {
@@ -287,7 +288,7 @@ module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
-    handlePostback: handlePostback,
+    handlePostBack: handlePostBack,
     handleMessage: handleMessage,
     setUpProfile: setUpProfile,
     setUpPersistentMenu: setUpPersistentMenu,

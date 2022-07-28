@@ -21,31 +21,6 @@ const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
 const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
 const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
-
-// function callSendAPI(sender_psid, response) {
-//     // Construct the message body
-//     let request_body = {
-//         "recipient": {
-//             "id": sender_psid
-//         },
-//         "message": response
-//     }
-
-//     // Send the HTTP request to the Messenger Platform
-//     request({
-//         "uri": "https://graph.facebook.com/v9.0/me/messages",
-//         "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//         "method": "POST",
-//         "json": request_body
-//     }, (err, res, body) => {
-//         if (!err) {
-//             console.log('message sent!')
-//         } else {
-//             console.error("Unable to send message:" + err);
-//         }
-//     });
-// }
-
 let callSendAPI = (sender_psid, message) => {
     return new Promise(async (resolve, reject) => {
         try {
