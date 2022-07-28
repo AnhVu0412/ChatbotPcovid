@@ -35,7 +35,6 @@ let getWebhook = (req, res) => {
     }
 }
 
-
 let postWebhook = (req, res) => {
     let body = req.body;
 
@@ -80,13 +79,13 @@ let handlePostback = async (sender_psid, received_postback) => {
         switch (payload) {
             case 'RESTART_BOT':
             case 'GET_STARTED':
-                await handleGetStarted(sender_psid);
+                await chatbotService.handleGetStarted(sender_psid);
                 break;
             case 'BACK_TO_MENU':
-                await handleBackToMenu(sender_psid);
+                await chatbotService.handleBackToMenu(sender_psid);
                 break;
             case "DOCTORS":
-                await sendMessageReplyDoctors(sender_psid);
+                await chatbotService.sendMessageReplyDoctors(sender_psid);
                 break;
             // case "CLINICS":
             //     await sendMessageReplyClinics(sender_psid);
@@ -100,13 +99,13 @@ let handlePostback = async (sender_psid, received_postback) => {
             case "yes":
                 response = "Thanks!";
                 // Send the message to acknowledge the postback
-                await callSendAPI(sender_psid, response);
+                await chatbotService.callSendAPI(sender_psid, response);
                 resolve("OK");
                 break;
             case "no":
                 response = "Oops, try sending another image.";
                 // Send the message to acknowledge the postback
-                await callSendAPI(sender_psid, response);
+                await chatbotService.callSendAPI(sender_psid, response);
                 resolve("OK");
                 break;
             default:
@@ -120,7 +119,7 @@ let handlePostback = async (sender_psid, received_postback) => {
 
 let handleMessage = async (sender_psid, received_message) => {
     if (received_message.sticker_id) {
-        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
+        await chatbotService.callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
         return;
     }
     //checking quick reply
