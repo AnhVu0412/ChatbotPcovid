@@ -37,10 +37,8 @@ let getWebhook = (req, res) => {
 
 let postWebhook = (req, res) => {
     let body = req.body;
-
     // Checks this is an event from a page subscription
     if (body.object === 'page') {
-
         // Iterates over each entry - there may be multiple if batched
         body.entry.forEach(function (entry) {
             // Gets the body of the webhook event
@@ -69,7 +67,7 @@ let postWebhook = (req, res) => {
 
 // Handles messaging_postbacks events
 let handlePostback = async (sender_psid, received_postback) => {
-    //return new Promise(async (resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let response;
 
         // Get the payload for the postback
@@ -114,7 +112,7 @@ let handlePostback = async (sender_psid, received_postback) => {
 
         // Send the message to acknowledge the postback
         //callSendAPI(sender_psid, response);
-    //})
+    })
 }
 
 let handleMessage = async (sender_psid, received_message) => {
@@ -167,7 +165,7 @@ function callSendAPI(sender_psid, response) {
 
     // Send the HTTP request to the Messenger Platform
     request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "uri": "https://graph.facebook.com/v9.0/me/messages",
         "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
@@ -290,6 +288,7 @@ module.exports = {
     postWebhook: postWebhook,
     getWebhook: getWebhook,
     handlePostback: handlePostback,
+    handleMessage: handleMessage,
     setUpProfile: setUpProfile,
     setUpPersistentMenu: setUpPersistentMenu,
     handleMakeAppointment: handleMakeAppointment,
