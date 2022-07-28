@@ -99,13 +99,13 @@ let handlePostback = async (sender_psid, received_postback) => {
             case "yes":
                 response = "Thanks!";
                 // Send the message to acknowledge the postback
-                await chatbotService.callSendAPI(sender_psid, response);
+                await callSendAPI(sender_psid, response);
                 resolve("OK");
                 break;
             case "no":
                 response = "Oops, try sending another image.";
                 // Send the message to acknowledge the postback
-                await chatbotService.callSendAPI(sender_psid, response);
+                await callSendAPI(sender_psid, response);
                 resolve("OK");
                 break;
             default:
@@ -119,7 +119,7 @@ let handlePostback = async (sender_psid, received_postback) => {
 
 let handleMessage = async (sender_psid, received_message) => {
     if (received_message.sticker_id) {
-        await chatbotService.callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
+        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
         return;
     }
     //checking quick reply
@@ -156,31 +156,29 @@ let handleMessage = async (sender_psid, received_message) => {
 }
 
 //Sends response messages via the Send API
-// function callSendAPI(sender_psid, response) {
-//     // Construct the message body
-//     let request_body = {
-//         "recipient": {
-//             "id": sender_psid
-//         },
-//         "message": response
-//     }
+function callSendAPI(sender_psid, response) {
+    // Construct the message body
+    let request_body = {
+        "recipient": {
+            "id": sender_psid
+        },
+        "message": response
+    }
 
-//     // Send the HTTP request to the Messenger Platform
-//     request({
-//         "uri": "https://graph.facebook.com/v2.6/me/messages",
-//         "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
-//         "method": "POST",
-//         "json": request_body
-//     }, (err, res, body) => {
-//         if (!err) {
-//             console.log('message sent!')
-//         } else {
-//             console.error("Unable to send message:" + err);
-//         }
-//     });
-// }
-
-
+    // Send the HTTP request to the Messenger Platform
+    request({
+        "uri": "https://graph.facebook.com/v2.6/me/messages",
+        "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('message sent!')
+        } else {
+            console.error("Unable to send message:" + err);
+        }
+    });
+}
 
 let setUpProfile = async (req, res) => {
     //call profile facebook api
@@ -273,7 +271,7 @@ let handlePostMakeAppointment = async (req, res) => {
             `
         };
 
-        await chatbotService.callSendAPI(req.body.psid, response1);
+        await callSendAPI(req.body.psid, response1);
 
         console.log(req.body);
 
