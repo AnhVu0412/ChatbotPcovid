@@ -66,7 +66,7 @@ let postWebhook = (req, res) => {
 }
 
 // Handles messaging_postbacks events
-let handlePostBack = async (sender_psid, received_postback) => {
+async function handlePostBack(sender_psid, received_postback){
     return new Promise(async (resolve, reject) => {
         let response;
 
@@ -115,7 +115,7 @@ let handlePostBack = async (sender_psid, received_postback) => {
     })
 }
 
-let handleMessage = async (sender_psid, received_message) => {
+async function handleMessage(sender_psid, received_message){
     if (received_message.sticker_id) {
         await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
         return;
