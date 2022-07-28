@@ -109,7 +109,6 @@ let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
             reject(e);
         }
     })
-
 };
 
 let handleGetStarted = (sender_psid) => {
