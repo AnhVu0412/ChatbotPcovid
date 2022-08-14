@@ -120,6 +120,7 @@ async function handleMessage(sender_psid, received_message){
     //     await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
     //     return;
     // }
+
     //checking quick reply
     if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
         let payload = received_message.quick_reply.payload;
@@ -367,7 +368,7 @@ let setUpPersistentMenu = async (req, res) => {
                     },
                     {
                         "type": "postback",
-                        "title": "Khởi động lại bot ",
+                        "title": "Khởi động lại bot",
                         "payload": "RESTART_BOT"
                     }
                 ]
