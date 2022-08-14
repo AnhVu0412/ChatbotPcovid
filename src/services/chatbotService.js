@@ -137,7 +137,7 @@ let getStartedTemplate = (senderID) => {
                         {
                             "type": "postback",
                             "title": "Hướng dẫn sử dụng bot",
-                            "payload": "GUIDE_TO_USE_BOT",
+                            "payload": "GUIDE_TO_USE",
                         }
                     ],
                 }]
