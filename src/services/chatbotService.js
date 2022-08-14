@@ -31,9 +31,10 @@ let callSendAPI = (sender_psid, message) => {
                 "recipient": {
                     "id": sender_psid
                 },
-                "message": {
-                    "text": message
-                }
+                // "message": {
+                //     "text": message
+                // }
+                "message": response
             };
 
             // Send the HTTP request to the Messenger Platform
