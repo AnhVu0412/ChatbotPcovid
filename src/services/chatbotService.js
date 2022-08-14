@@ -234,6 +234,48 @@ let handleBackToMenu = async (sender_psid) => {
     await handleSendMainMenu(sender_psid);
 }
 
+let handleGuideToUseBot = (sender_psid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let username = await getUserName(sender_psid);
+            let response1 = { "text": `Xin chào bạn ${username}, mình là chatbot P-Covid Care.\n Để biết thêm thông tin vui lòng xem video bên dưới` }
+
+            let response2 = getBotMediaTemplate()
+            await callSendAPI(sender_psid, response1);
+            await callSendAPI(sender_psid, response2);
+            resolve('done');
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let getBotMediaTemplate = () => {
+    let response = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "media",
+                "elements": [
+                    {
+                        "media_type": "video",
+                        //"attachment_id": "<ATTACHMENT_ID>",
+                        "url": "https://business.facebook.com/101707255939057/videos/1272951703510633/",
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Menu chính",
+                                "payload": "MAIN_MENU",
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    };
+    return response;
+}
+
 module.exports = {
     handleGetStarted: handleGetStarted,
     //firstEntity: firstEntity,
@@ -243,4 +285,5 @@ module.exports = {
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,
     sendMessageReplyDoctors: sendMessageReplyDoctors,
+    handleGuideToUseBot: handleGuideToUseBot
 }

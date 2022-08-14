@@ -82,6 +82,9 @@ async function handlePostBack(sender_psid, received_postback){
             case 'BACK_TO_MENU':
                 await chatbotService.handleBackToMenu(sender_psid);
                 break;
+            case 'GUIDE_TO_USE':
+                await chatbotService.handleGuideToUseBot(sender_psid);
+                break;
             case "DOCTORS":
                 await chatbotService.sendMessageReplyDoctors(sender_psid);
                 break;
@@ -114,6 +117,9 @@ async function handleMessage(sender_psid, received_message){
         if (payload === "DOCTORS") {
             await chatbotService.sendMessageReplyDoctors(sender_psid);
             return;
+        }
+        if (payload === 'GUIDE_TO_USE'){
+            await chatbotService.handleGuideToUseBot(sender_psid);
         }
         // } else if (payload === "DOCTORS") {
         //     await sendMessageReplyDoctors(sender_psid);
