@@ -21,7 +21,7 @@ const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
 const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
 const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
-let callSendAPI = (sender_psid, message) => {
+let callSendAPI = (sender_psid, response) => {
 
     // Construct the message body
     let request_body = {
