@@ -139,18 +139,18 @@ async function handleMessage(sender_psid, received_message){
         // }
     }
 
-    let name = "";
-    let entityCheck = {};
-    let arrPossibleEntity = ['intent', 'booking', 'info'];
-    for (let i = 0; i < arrPossibleEntity.length; i++) {
-        let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
-        if (entity && entity.confidence > 0.8) {
-            name = arrPossibleEntity[i];
-            entityCheck = entity;
-            break;
-        }
-    }
-    await chatbotService.handleEntity(name, sender_psid, entityCheck);
+    // let name = "";
+    // let entityCheck = {};
+    // let arrPossibleEntity = ['intent', 'booking', 'info'];
+    // for (let i = 0; i < arrPossibleEntity.length; i++) {
+    //     let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
+    //     if (entity && entity.confidence > 0.8) {
+    //         name = arrPossibleEntity[i];
+    //         entityCheck = entity;
+    //         break;
+    //     }
+    // }
+    // await chatbotService.handleEntity(name, sender_psid, entityCheck);
 }
 
 //Sends response messages via the Send API
@@ -213,61 +213,61 @@ let callSendAPI = (sender_psid, message) => {
     });
 };
 
-let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            await markMessageSeen(sender_psid);
-            await sendTypingOn(sender_psid);
-            let body = {
-                "recipient": {
-                    "id": sender_psid
-                },
-                "message": {
-                    "attachment": {
-                        "type": "template",
-                        "payload": {
-                            "template_type": "generic",
-                            "elements": [
-                                {
-                                    "title": title,
-                                    "image_url": imageUrl,
-                                    "subtitle": subtitle,
-                                    "default_action": {
-                                        "type": "web_url",
-                                        "url": redirectUrl,
-                                        "webview_height_ratio": "tall",
-                                    },
-                                    "buttons": [
-                                        {
-                                            "type": "web_url",
-                                            "url": redirectUrl,
-                                            "title": "Xem chi tiết"
-                                        },
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                }
-            };
+// let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             await markMessageSeen(sender_psid);
+//             await sendTypingOn(sender_psid);
+//             let body = {
+//                 "recipient": {
+//                     "id": sender_psid
+//                 },
+//                 "message": {
+//                     "attachment": {
+//                         "type": "template",
+//                         "payload": {
+//                             "template_type": "generic",
+//                             "elements": [
+//                                 {
+//                                     "title": title,
+//                                     "image_url": imageUrl,
+//                                     "subtitle": subtitle,
+//                                     "default_action": {
+//                                         "type": "web_url",
+//                                         "url": redirectUrl,
+//                                         "webview_height_ratio": "tall",
+//                                     },
+//                                     "buttons": [
+//                                         {
+//                                             "type": "web_url",
+//                                             "url": redirectUrl,
+//                                             "title": "Xem chi tiết"
+//                                         },
+//                                     ]
+//                                 }
+//                             ]
+//                         }
+//                     }
+//                 }
+//             };
 
-            request({
-                "uri": "https://graph.facebook.com/v9.0/me/messages",
-                "qs": { "access_token": PAGE_ACCESS_TOKEN },
-                "method": "POST",
-                "json": body
-            }, (err, res, body) => {
-                if (!err) {
-                    resolve("ok");
-                } else {
-                    reject("Unable to send message:" + err);
-                }
-            });
-        } catch (e) {
-            reject(e);
-        }
-    })
-};
+//             request({
+//                 "uri": "https://graph.facebook.com/v9.0/me/messages",
+//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
+//                 "method": "POST",
+//                 "json": body
+//             }, (err, res, body) => {
+//                 if (!err) {
+//                     resolve("ok");
+//                 } else {
+//                     reject("Unable to send message:" + err);
+//                 }
+//             });
+//         } catch (e) {
+//             reject(e);
+//         }
+//     })
+// };
 
 let markMessageSeen = (sender_psid) => {
     return new Promise((resolve, reject) => {
@@ -436,7 +436,7 @@ module.exports = {
     getHomePage: getHomePage,
     postWebhook: postWebhook,
     getWebhook: getWebhook,
-    callSendAPIv2: callSendAPIv2,
+    //callSendAPIv2: callSendAPIv2,
     handlePostBack: handlePostBack,
     handleMessage: handleMessage,
     setUpProfile: setUpProfile,
