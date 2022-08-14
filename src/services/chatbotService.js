@@ -45,6 +45,68 @@ let callSendAPI = (sender_psid, response) => {
     });
 };
 
+let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await markMessageSeen(sender_psid);
+            await sendTypingOn(sender_psid);
+            let body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "message": {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": [
+                                {
+                                    "title": title,
+                                    "image_url": imageUrl,
+                                    "subtitle": subtitle,
+                                    "default_action": {
+                                        "type": "web_url",
+                                        "url": redirectUrl,
+                                        "webview_height_ratio": "tall",
+                                    },
+                                    "buttons": [
+                                        {
+                                            "type": "web_url",
+                                            "url": redirectUrl,
+                                            "title": "Xem chi tiết"
+                                        },
+                                        {
+                                            "type": "phone_number",
+                                            "title": "Gọi hotline",
+                                            "payload": "+8498549864"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve("ok");
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    })
+
+};
+
 let handleGetStarted = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -65,31 +127,31 @@ let handleGetStarted = (sender_psid) => {
     })
 }
 
-// let firstEntity = (nlp, name) => {
-//     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
-// };
+let firstEntity = (nlp, name) => {
+    return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+};
 
-// let handleEntity = async (name, sender_psid, entity) => {
-//     switch (name) {
-//         case "intent":
-//             if (entity.value === 'doctors') {
-//                 await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
-//                 let title = "P-Covid Care";
-//                 let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
-//                 // await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
-//             }
-//             break;
-//         case "booking":
-//             await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
-//             // await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
-//         case "info":
-//             await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
-//             // await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
-//         default:
-//             await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
-//             // await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
-//     }
-// };
+let handleEntity = async (name, sender_psid, entity) => {
+    switch (name) {
+        case "intent":
+            if (entity.value === 'doctors') {
+                await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
+                let title = "P-Covid Care";
+                let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
+                // await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+            }
+            break;
+        case "booking":
+            await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
+            // await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+        case "info":
+            await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
+            // await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+        default:
+            await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
+            // await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+    }
+};
 
 
 let getUserName = (sender_psid) => {
@@ -238,7 +300,7 @@ let handleGuideToUseBot = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let username = await getUserName(sender_psid);
-            let response1 = { "text": `Xin chào bạn ${username}, mình là chatbot P-Covid Care.\n Để biết thêm thông tin vui lòng xem video bên dưới` }
+            let response1 = { "text": `Xin chào bạn ${username}, mình là chatbot P-Covid Care.\nĐể biết thêm về cách sử dụng các chức năng của chatbot vui lòng xem video bên dưới` }
 
             let response2 = getBotMediaTemplate()
             await callSendAPI(sender_psid, response1);
@@ -265,7 +327,7 @@ let getBotMediaTemplate = () => {
                             {
                                 "type": "postback",
                                 "title": "Menu chính",
-                                "payload": "MAIN_MENU",
+                                "payload": "BACK_TO_MENU",
                             }
                         ]
                     }
@@ -278,9 +340,10 @@ let getBotMediaTemplate = () => {
 
 module.exports = {
     handleGetStarted: handleGetStarted,
-    //firstEntity: firstEntity,
+    callSendAPIv2: callSendAPIv2,
+    firstEntity: firstEntity,
     callSendAPI: callSendAPI,
-    //handleEntity: handleEntity,
+    handleEntity: handleEntity,
     getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,
