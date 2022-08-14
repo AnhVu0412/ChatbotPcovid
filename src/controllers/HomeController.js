@@ -82,21 +82,21 @@ async function handlePostBack(sender_psid, received_postback){
             case 'BACK_TO_MENU':
                 await chatbotService.handleBackToMenu(sender_psid);
                 break;
-            // case "DOCTORS":
-            //     await chatbotService.sendMessageReplyDoctors(sender_psid);
-            //     break;
-            // case "yes":
-            //     response = "Thanks!";
-            //     // Send the message to acknowledge the postback
-            //     await callSendAPI(sender_psid, response);
-            //     resolve("OK");
-            //     break;
-            // case "no":
-            //     response = "Oops, try sending another image.";
-            //     // Send the message to acknowledge the postback
-            //     await callSendAPI(sender_psid, response);
-            //     resolve("OK");
-            //     break;
+            case "DOCTORS":
+                await chatbotService.sendMessageReplyDoctors(sender_psid);
+                break;
+            case "yes":
+                response = "Thanks!";
+                // Send the message to acknowledge the postback
+                await callSendAPI(sender_psid, response);
+                resolve("OK");
+                break;
+            case "no":
+                response = "Oops, try sending another image.";
+                // Send the message to acknowledge the postback
+                await callSendAPI(sender_psid, response);
+                resolve("OK");
+                break;
             default:
                 response = { "text": `Sorry, I didn't understand response with postback ${payload}.` };
         }

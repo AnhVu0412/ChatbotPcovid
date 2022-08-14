@@ -22,7 +22,6 @@ const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_pr
 const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
 let callSendAPI = (sender_psid, response) => {
-
     // Construct the message body
     let request_body = {
         "recipient": {
@@ -194,7 +193,6 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 // }
                             },
                             {
-
                                 "title": "Quay trở lại",
                                 "subtitle": "Quay trở lại Menu chính",
                                 "buttons": [
