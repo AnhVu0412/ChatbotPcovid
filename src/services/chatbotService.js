@@ -24,16 +24,11 @@ const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 let callSendAPI = (sender_psid, message) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // await markMessageSeen(sender_psid);
-            // await sendTypingOn(sender_psid);
             // Construct the message body
             let request_body = {
                 "recipient": {
                     "id": sender_psid
                 },
-                // "message": {
-                //     "text": message
-                // }
                 "message": response
             };
 
@@ -55,62 +50,6 @@ let callSendAPI = (sender_psid, message) => {
         }
     });
 };
-
-// let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             // await markMessageSeen(sender_psid);
-//             // await sendTypingOn(sender_psid);
-//             let body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "message": {
-//                     "attachment": {
-//                         "type": "template",
-//                         "payload": {
-//                             "template_type": "generic",
-//                             "elements": [
-//                                 {
-//                                     "title": title,
-//                                     "image_url": imageUrl,
-//                                     "subtitle": subtitle,
-//                                     "default_action": {
-//                                         "type": "web_url",
-//                                         "url": redirectUrl,
-//                                         "webview_height_ratio": "tall",
-//                                     },
-//                                     "buttons": [
-//                                         {
-//                                             "type": "web_url",
-//                                             "url": redirectUrl,
-//                                             "title": "Xem chi tiết"
-//                                         },
-//                                     ]
-//                                 }
-//                             ]
-//                         }
-//                     }
-//                 }
-//             };
-
-//             request({
-//                 "uri": "https://graph.facebook.com/v9.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve("ok");
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     })
-// };
 
 let handleGetStarted = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
@@ -136,118 +75,28 @@ let handleGetStarted = (sender_psid) => {
 //     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 // };
 
-let handleEntity = async (name, sender_psid, entity) => {
-    switch (name) {
-        case "intent":
-            if (entity.value === 'doctors') {
-                await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
-                let title = "P-Covid Care";
-                let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
-                // await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
-            }
-            break;
-        case "booking":
-            await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
-            // await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
-        case "info":
-            await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
-            // await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
-        default:
-            await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
-            // await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
-    }
-};
-
-// let sendMessage = (sender_psid, response) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             // await markMessageSeen(sender_psid);
-//             // await sendTypingOn(sender_psid);
-//             // Construct the message body
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "message": response,
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v9.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 console.log(body)
-//                 if (!err) {
-//                     resolve("ok")
-//                 } else {
-//                     reject(err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     })
+// let handleEntity = async (name, sender_psid, entity) => {
+//     switch (name) {
+//         case "intent":
+//             if (entity.value === 'doctors') {
+//                 await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
+//                 let title = "P-Covid Care";
+//                 let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
+//                 // await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+//             }
+//             break;
+//         case "booking":
+//             await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
+//             // await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+//         case "info":
+//             await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
+//             // await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+//         default:
+//             await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
+//             // await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+//     }
 // };
 
-// let markMessageSeen = (sender_psid) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "sender_action": "mark_seen"
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve('done!')
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
-
-// let sendTypingOn = (sender_psid) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "sender_action": "typing_on"
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve('done!')
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
 
 let getUserName = (sender_psid) => {
     return new Promise((resolve, reject) => {
@@ -396,7 +245,7 @@ module.exports = {
     handleGetStarted: handleGetStarted,
     //firstEntity: firstEntity,
     callSendAPI: callSendAPI,
-    handleEntity: handleEntity,
+    //handleEntity: handleEntity,
     getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,

@@ -85,15 +85,6 @@ async function handlePostBack(sender_psid, received_postback){
             case "DOCTORS":
                 await chatbotService.sendMessageReplyDoctors(sender_psid);
                 break;
-            // case "CLINICS":
-            //     await sendMessageReplyClinics(sender_psid);
-            //     break;
-            // case "SPECIALIZATION":
-            //     await sendMessageReplySpecialization(sender_psid);
-            //     break;
-            // case "CUSTOMER_SERVICE":
-            //     await chatWithCustomerService(sender_psid);
-            //     break;
             case "yes":
                 response = "Thanks!";
                 // Send the message to acknowledge the postback
@@ -116,11 +107,6 @@ async function handlePostBack(sender_psid, received_postback){
 }
 
 async function handleMessage(sender_psid, received_message){
-    // if (received_message.sticker_id) {
-    //     await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
-    //     return;
-    // }
-
     //checking quick reply
     if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
         let payload = received_message.quick_reply.payload;
@@ -139,19 +125,6 @@ async function handleMessage(sender_psid, received_message){
         //     return;
         // }
     }
-
-    // let name = "";
-    // let entityCheck = {};
-    // let arrPossibleEntity = ['intent', 'booking', 'info'];
-    // for (let i = 0; i < arrPossibleEntity.length; i++) {
-    //     let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
-    //     if (entity && entity.confidence > 0.8) {
-    //         name = arrPossibleEntity[i];
-    //         entityCheck = entity;
-    //         break;
-    //     }
-    // }
-    // await chatbotService.handleEntity(name, sender_psid, entityCheck);
 }
 
 //Sends response messages via the Send API
@@ -167,7 +140,7 @@ function callSendAPI(sender_psid, response) {
     // Send the HTTP request to the Messenger Platform
     request({
         "uri": "https://graph.facebook.com/v9.0/me/messages",
-        "qs": { "access_token": process.env.PAGE_ACCESS_TOKEN },
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
         "method": "POST",
         "json": request_body
     }, (err, res, body) => {
@@ -179,154 +152,6 @@ function callSendAPI(sender_psid, response) {
         }
     });
 }
-
-// let callSendAPI = (sender_psid, message) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             // await markMessageSeen(sender_psid);
-//             // await sendTypingOn(sender_psid);
-//             // Construct the message body
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "message": {
-//                     "text": message
-//                 }
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v9.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     console.log('message sent!')
-//                 } else {
-//                     console.error("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
-
-// let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             await markMessageSeen(sender_psid);
-//             await sendTypingOn(sender_psid);
-//             let body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "message": {
-//                     "attachment": {
-//                         "type": "template",
-//                         "payload": {
-//                             "template_type": "generic",
-//                             "elements": [
-//                                 {
-//                                     "title": title,
-//                                     "image_url": imageUrl,
-//                                     "subtitle": subtitle,
-//                                     "default_action": {
-//                                         "type": "web_url",
-//                                         "url": redirectUrl,
-//                                         "webview_height_ratio": "tall",
-//                                     },
-//                                     "buttons": [
-//                                         {
-//                                             "type": "web_url",
-//                                             "url": redirectUrl,
-//                                             "title": "Xem chi tiết"
-//                                         },
-//                                     ]
-//                                 }
-//                             ]
-//                         }
-//                     }
-//                 }
-//             };
-
-//             request({
-//                 "uri": "https://graph.facebook.com/v9.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve("ok");
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     })
-// };
-
-// let markMessageSeen = (sender_psid) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "sender_action": "mark_seen"
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve('done!')
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
-
-// let sendTypingOn = (sender_psid) => {
-//     return new Promise((resolve, reject) => {
-//         try {
-//             let request_body = {
-//                 "recipient": {
-//                     "id": sender_psid
-//                 },
-//                 "sender_action": "typing_on"
-//             };
-
-//             // Send the HTTP request to the Messenger Platform
-//             request({
-//                 "uri": "https://graph.facebook.com/v6.0/me/messages",
-//                 "qs": { "access_token": PAGE_ACCESS_TOKEN },
-//                 "method": "POST",
-//                 "json": request_body
-//             }, (err, res, body) => {
-//                 if (!err) {
-//                     resolve('done!')
-//                 } else {
-//                     reject("Unable to send message:" + err);
-//                 }
-//             });
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
 
 let setUpProfile = async (req, res) => {
     //call profile facebook api
