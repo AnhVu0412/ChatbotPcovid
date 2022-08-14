@@ -138,18 +138,18 @@ let handleEntity = async (name, sender_psid, entity) => {
                 await callSendAPI(sender_psid, "Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.");
                 let title = "P-Covid Care";
                 let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
-                // await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+                await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
             }
             break;
         case "booking":
             await callSendAPI(sender_psid, "Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.");
-            // await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
         case "info":
             await callSendAPI(sender_psid, "Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.");
-            // await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+            await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
         default:
             await callSendAPI(sender_psid, "Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:");
-            // await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+            await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
     }
 };
 
