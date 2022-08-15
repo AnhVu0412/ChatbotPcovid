@@ -112,7 +112,8 @@ async function handlePostBack(sender_psid, received_postback){
 
 async function handleMessage(sender_psid, received_message){
     if (received_message.sticker_id) {
-        await callSendAPI(sender_psid, "Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care !!!");
+        let response1 = { "text": `Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care` }
+        await callSendAPI(sender_psid, response1);
         return;
     }
     //checking quick reply

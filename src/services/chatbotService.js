@@ -1,6 +1,7 @@
 require('dotenv').config();
 const request = require('request');
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const WIT_SERVER_TOKEN = process.env.WIT_AI_SERVER_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
 
 const DOCTOR_IMAGE_URL = "https://bralowmedicalgroup.com/wp-content/uploads/2018/06/blog.jpg";
@@ -186,7 +187,7 @@ let firstEntity = (nlp, name) => {
 
 let handleEntity = async (name, sender_psid, entity) => {
     switch (name) {
-        case "intent":
+        case "intents":
             if (entity.value === 'doctors') {
                 let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
                 await callSendAPI(sender_psid, response1);
@@ -210,6 +211,80 @@ let handleEntity = async (name, sender_psid, entity) => {
     }
 };
 
+let getWitEntities = () => {
+    return new Promise((resolve, reject) => {
+        try {
+            request({
+                "uri": "https://api.wit.ai/entities",
+                "method": "GET",
+                "auth": {
+                    'bearer': WIT_SERVER_TOKEN
+                }
+            }, (err, res, body) => {
+                if (!err) {
+                    let result = JSON.parse(body);
+                    let arr = [];
+                    for (let [ key, value ] of Object.entries(result)) {
+
+                        // arr.push(value)
+
+                        arr.push(value.name)
+                    }
+                    // new wit update, tạm thời comment lại
+                    // let userEntity = arr.filter(e => {
+                    //     return e.indexOf("wit") !== 0;
+                    // });
+                    // resolve(userEntity);
+                    resolve(arr)
+                } else {
+                    reject(err);
+                }
+            });
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let getEntityByName = (name) => {
+    return new Promise((resolve, reject) => {
+        try {
+            request({
+                "uri": `https://api.wit.ai/entities/${name}?v=20220815`,
+                "method": "GET",
+                "auth": {
+                    'bearer': WIT_SERVER_TOKEN
+                }
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve(body);
+                } else {
+                    reject(err);
+                }
+            });
+
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let getWitEntitiesWithExpression = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let entities = await getWitEntities();
+            let result = [];
+            await Promise.all(entities.map(async (name) => {
+                let b = await getEntityByName(name);
+                result.push(JSON.parse(b));
+            }));
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 let getUserName = (sender_psid) => {
     return new Promise((resolve, reject) => {
@@ -396,6 +471,7 @@ let getBotMediaTemplate = () => {
 }
 
 module.exports = {
+    getWitEntitiesWithExpression: getWitEntitiesWithExpression,
     handleGetStarted: handleGetStarted,
     callSendAPIv2: callSendAPIv2,
     firstEntity: firstEntity,
