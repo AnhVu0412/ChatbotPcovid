@@ -111,7 +111,7 @@ async function handlePostBack(sender_psid, received_postback){
 }
 
 async function handleMessage(sender_psid, received_message){
-    const sticker_id = 369239263222822
+    const sticker_id = 1433995916873384
     if (received_message.sticker_id) {
         let response1 = { "text": `Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care` }
         await callSendAPI(sender_psid, response1);
