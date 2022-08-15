@@ -111,6 +111,7 @@ async function handlePostBack(sender_psid, received_postback){
 }
 
 async function handleMessage(sender_psid, received_message){
+    const sticker_id = 369239263222822
     if (received_message.sticker_id) {
         let response1 = { "text": `Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care` }
         await callSendAPI(sender_psid, response1);
@@ -139,7 +140,7 @@ async function handleMessage(sender_psid, received_message){
     }
     let name = "";
     let entityCheck = {};
-    let arrPossibleEntity = [ 'intent', 'booking', 'info' ];
+    let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
     for (let i = 0; i < arrPossibleEntity.length; i++) {
         let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
         if (entity && entity.confidence > 0.8) {
