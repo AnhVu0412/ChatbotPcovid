@@ -175,7 +175,7 @@ const handleResponse = async (name, sender_psid, entity, response) => {
     // let name = undefined;
     let confidence = 0;
 
-    Array(respone).forEach(r => {
+    Array(response).forEach(r => {
         if (r.intents.length > 0) {
             name = r.intents[0].name;
             confidence = r.intents[0].confidence;
