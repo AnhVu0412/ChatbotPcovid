@@ -5,8 +5,22 @@ const accessToken = process.env.WIT_AI_SERVER_TOKEN;
 import pkg from 'node-wit';
 const {Wit} = pkg
 
+
+
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
+
+const DOCTOR_IMAGE_URL = "https://bralowmedicalgroup.com/wp-content/uploads/2018/06/blog.jpg";
+const DOCTOR_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const BOOKING_IMAGE_URL = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const INFOWEBSITE_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
+const INFOWEBSITE_URL = "https://doctorcare-v1.herokuapp.com/";
+
+const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
+const DEFAULT_URL = "https://doctorcare-v1.herokuapp.com/";
 
 let getHomePage = (req, res) => {
     return res.render('homepage.ejs');
