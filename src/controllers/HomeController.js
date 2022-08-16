@@ -3,7 +3,7 @@ require('dotenv').config();
 import request from 'request';
 const accessToken = process.env.WIT_AI_SERVER_TOKEN;
 import pkg from 'node-wit';
-const {Wit} = pkg
+const { Wit } = pkg
 
 
 
@@ -83,7 +83,7 @@ let postWebhook = (req, res) => {
 }
 
 // Handles messaging_postbacks events
-async function handlePostBack(sender_psid, received_postback){
+async function handlePostBack(sender_psid, received_postback) {
     return new Promise(async (resolve, reject) => {
         let response;
 
@@ -127,7 +127,7 @@ async function handlePostBack(sender_psid, received_postback){
 
 }
 
-async function handleMessage(sender_psid, received_message){
+async function handleMessage(sender_psid, received_message) {
     // const sticker_id = 1433995916873384
     // if (received_message.sticker_id) {
     //     let response1 = { "text": `Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care` }
@@ -146,42 +146,43 @@ async function handleMessage(sender_psid, received_message){
     //     }
     // }
     try {
-        const client = new Wit({accessToken : '4OGYTLYETC37REL2YXWTEFMMC73DK4DF'});
-        const respone = await client.message(received_message.text,{});
+        const client = new Wit({ accessToken: '4OGYTLYETC37REL2YXWTEFMMC73DK4DF' });
+        const respone = await client.message(received_message.text, {});
         console.log(respone);
-        if(respone){
-            handleResponse(sender_psid, respone);
+        if (respone) {
+            let name = "";
+            let entityCheck = {};
+            let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
+            for (let i = 0; i < arrPossibleEntity.length; i++) {
+                let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
+                if (entity && entity.confidence > 0.8) {
+                    name = arrPossibleEntity[i];
+                    entityCheck = entity;
+                    break;
+                }
+            }
+            await handleResponse(name, sender_psid, entityCheck);
+            //handleResponse(sender_psid, respone);
         }
     } catch (error) {
-        if(error) 
-        console.log(error);
+        if (error)
+            console.log(error);
     }
-    // let name = "";
-    // let entityCheck = {};
-    // let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
-    // for (let i = 0; i < arrPossibleEntity.length; i++) {
-    //     let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
-    //     if (entity && entity.confidence > 0.8) {
-    //         name = arrPossibleEntity[i];
-    //         entityCheck = entity;
-    //         break;
-    //     }
-    // }
-    // await chatbotService.handleEntity(name, sender_psid, entityCheck);
+
 }
 
-const handleResponse = async (sender_psid, respone) => {
-    let name = undefined;
-    let confidence = 0;
+const handleResponse = async (name, sender_psid, entity) => {
+    // let name = undefined;
+    // let confidence = 0;
 
-    Array(respone).forEach(r => {
-        if(r.intents.length > 0){
-            name = r.intents[0].name;
-            confidence = r.intents[0].confidence;
-        }
-    });
-    switch(name){
-        case "doctors":
+    // Array(respone).forEach(r => {
+    //     if (r.intents.length > 0) {
+    //         name = r.intents[0].name;
+    //         confidence = r.intents[0].confidence;
+    //     }
+    // });
+    switch (name) {
+        case "intents":
             if (entity.value === 'doctors') {
                 let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
                 await callSendAPI(sender_psid, response1);
@@ -190,7 +191,7 @@ const handleResponse = async (sender_psid, respone) => {
                 await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
             }
             break;
-        
+
         case "info":
             let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
             await callSendAPI(sender_psid, response3);
