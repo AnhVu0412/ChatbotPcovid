@@ -156,7 +156,7 @@ async function handleMessage(sender_psid, received_message){
     // await chatbotService.handleEntity(name, sender_psid, entityCheck);
 }
 
-const handleResponse = (sender_psid, respone) => {
+const handleResponse = async (sender_psid, respone) => {
     let name = undefined;
     let confidence = 0;
 
