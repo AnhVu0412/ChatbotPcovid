@@ -251,7 +251,7 @@ let getEntityByName = (name) => {
     return new Promise((resolve, reject) => {
         try {
             request({
-                "uri": `https://api.wit.ai/entities/${name}?v=20220815`,
+                "uri": `https://api.wit.ai/entities/${name}?v=20170307`,
                 "method": "GET",
                 "auth": {
                     'bearer': WIT_SERVER_TOKEN

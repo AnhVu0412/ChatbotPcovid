@@ -1,6 +1,9 @@
 import chatbotService from './../services/chatbotService';
 require('dotenv').config();
 import request from 'request';
+const WIT_SERVER_TOKEN = process.env.WIT_AI_SERVER_TOKEN;
+import pkg from 'node-wit';
+const {Wit} = pkg
 
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
@@ -111,12 +114,12 @@ async function handlePostBack(sender_psid, received_postback){
 }
 
 async function handleMessage(sender_psid, received_message){
-    const sticker_id = 1433995916873384
-    if (received_message.sticker_id) {
-        let response1 = { "text": `Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care` }
-        await callSendAPI(sender_psid, response1);
-        return;
-    }
+    // const sticker_id = 1433995916873384
+    // if (received_message.sticker_id) {
+    //     let response1 = { "text": `Cảm ơn bạn đã sử dụng dịch vụ của P-Covid Care` }
+    //     await callSendAPI(sender_psid, response1);
+    //     return;
+    // }
     //checking quick reply
     if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
         let payload = received_message.quick_reply.payload;
@@ -127,29 +130,65 @@ async function handleMessage(sender_psid, received_message){
         if (payload === 'GUIDE_TO_USE'){
             await chatbotService.handleGuideToUseBot(sender_psid);
         }
-        // } else if (payload === "DOCTORS") {
-        //     await sendMessageReplyDoctors(sender_psid);
-        //     return;
-        // } else if (payload === "CLINICS") {
-        //     await sendMessageReplyClinics(sender_psid);
-        //     return;
-        // } else if (payload === "SPECIALIZATION") {
-        //     await sendMessageReplySpecialization(sender_psid);
-        //     return;
-        // }
     }
-    let name = "";
-    let entityCheck = {};
-    let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
-    for (let i = 0; i < arrPossibleEntity.length; i++) {
-        let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
-        if (entity && entity.confidence > 0.8) {
-            name = arrPossibleEntity[i];
-            entityCheck = entity;
-            break;
+    try {
+        const client = new Wit({WIT_SERVER_TOKEN});
+        const respone = await client.message(received_message.text,{});
+        console.log(respone);
+        if(respone){
+            handleResponse(sender_psid, respone);
         }
+    } catch (error) {
+        if(error) 
+        console.log(error);
     }
-    await chatbotService.handleEntity(name, sender_psid, entityCheck);
+    // let name = "";
+    // let entityCheck = {};
+    // let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
+    // for (let i = 0; i < arrPossibleEntity.length; i++) {
+    //     let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
+    //     if (entity && entity.confidence > 0.8) {
+    //         name = arrPossibleEntity[i];
+    //         entityCheck = entity;
+    //         break;
+    //     }
+    // }
+    // await chatbotService.handleEntity(name, sender_psid, entityCheck);
+}
+
+const handleResponse = (sender_psid, respone) => {
+    let name = undefined;
+    let confidence = 0;
+
+    Array(respone).forEach(r => {
+        if(r.intents.length > 0){
+            name = r.intents[0].name;
+            confidence = r.intents[0].confidence;
+        }
+    });
+    switch(name){
+        case "intents":
+            if (entity.value === 'doctors:doctors') {
+                let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
+                await callSendAPI(sender_psid, response1);
+                let title = "P-Covid Care";
+                let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
+                await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+            }
+            break;
+        case "booking":
+            let response2 = { "text": `Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.` }
+            await callSendAPI(sender_psid, response2);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+        case "info":
+            let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
+            await callSendAPI(sender_psid, response3);
+            await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+        default:
+            let response4 = { "text": `Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:` }
+            await callSendAPI(sender_psid, response4);
+            await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+    }
 }
 
 //Sends response messages via the Send API
@@ -233,6 +272,64 @@ let callSendAPIv2 = (sender_psid, title, subtitle, imageUrl, redirectUrl) => {
         }
     })
 
+};
+
+let markMessageSeen = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "mark_seen"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let sendTypingOn = (sender_psid) => {
+    return new Promise((resolve, reject) => {
+        try {
+            let request_body = {
+                "recipient": {
+                    "id": sender_psid
+                },
+                "sender_action": "typing_on"
+            };
+
+            // Send the HTTP request to the Messenger Platform
+            request({
+                "uri": "https://graph.facebook.com/v6.0/me/messages",
+                "qs": { "access_token": PAGE_ACCESS_TOKEN },
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    resolve('done!')
+                } else {
+                    reject("Unable to send message:" + err);
+                }
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
 };
 
 let setUpProfile = async (req, res) => {
