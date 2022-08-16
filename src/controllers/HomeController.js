@@ -161,7 +161,7 @@ async function handleMessage(sender_psid, received_message) {
                     break;
                 }
             }
-            await handleResponse(name, sender_psid, entityCheck);
+            await handleResponse(name, sender_psid, entityCheck, respone);
             //handleResponse(sender_psid, respone);
         }
     } catch (error) {
@@ -171,16 +171,16 @@ async function handleMessage(sender_psid, received_message) {
 
 }
 
-const handleResponse = async (name, sender_psid, entity) => {
+const handleResponse = async (name, sender_psid, entity, response) => {
     // let name = undefined;
-    // let confidence = 0;
+    let confidence = 0;
 
-    // Array(respone).forEach(r => {
-    //     if (r.intents.length > 0) {
-    //         name = r.intents[0].name;
-    //         confidence = r.intents[0].confidence;
-    //     }
-    // });
+    Array(respone).forEach(r => {
+        if (r.intents.length > 0) {
+            name = r.intents[0].name;
+            confidence = r.intents[0].confidence;
+        }
+    });
     switch (name) {
         case "intents":
             if (entity.value === 'doctors') {
