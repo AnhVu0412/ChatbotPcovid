@@ -1,7 +1,7 @@
 import chatbotService from './../services/chatbotService';
 require('dotenv').config();
 import request from 'request';
-const WIT_SERVER_TOKEN = process.env.WIT_AI_SERVER_TOKEN;
+const accessToken = process.env.WIT_AI_SERVER_TOKEN;
 import pkg from 'node-wit';
 const {Wit} = pkg
 
@@ -132,7 +132,7 @@ async function handleMessage(sender_psid, received_message){
         }
     }
     try {
-        const client = new Wit({accessToken:WIT_SERVER_TOKEN});
+        const client = new Wit({accessToken});
         const respone = await client.message(received_message,{});
         console.log(respone);
         if(respone){
