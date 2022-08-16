@@ -191,11 +191,11 @@ const handleResponse = async (sender_psid, respone) => {
             }
             break;
         
-        case "info:info":
+        case "info":
             let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
             await callSendAPI(sender_psid, response3);
             await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
-        case "booking:booking":
+        case "booking":
             let response2 = { "text": `Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.` }
             await callSendAPI(sender_psid, response2);
             await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
