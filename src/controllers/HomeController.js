@@ -132,7 +132,7 @@ async function handleMessage(sender_psid, received_message){
         }
     }
     try {
-        const client = new Wit({WIT_SERVER_TOKEN});
+        const client = new Wit({accessToken:WIT_SERVER_TOKEN, actions});
         const respone = await client.message(received_message,{});
         console.log(respone);
         if(respone){
