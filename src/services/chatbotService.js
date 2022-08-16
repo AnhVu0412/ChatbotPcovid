@@ -477,7 +477,7 @@ module.exports = {
     callSendAPIv2: callSendAPIv2,
     firstEntity: firstEntity,
     callSendAPI: callSendAPI,
-    handleEntity: handleEntity,
+    //handleEntity: handleEntity,
     getStartedTemplate: getStartedTemplate,
     handleBackToMenu: handleBackToMenu,
     handleSendMainMenu: handleSendMainMenu,
