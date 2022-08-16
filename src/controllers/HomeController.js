@@ -133,7 +133,7 @@ async function handleMessage(sender_psid, received_message){
     }
     try {
         const client = new Wit({WIT_SERVER_TOKEN});
-        const respone = await client.message(received_message.text,{});
+        const respone = await client.message(received_message,{});
         console.log(respone);
         if(respone){
             handleResponse(sender_psid, respone);
