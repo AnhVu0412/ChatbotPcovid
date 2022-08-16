@@ -185,32 +185,32 @@ let firstEntity = (nlp, name) => {
     return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 };
 
-let handleEntity = async (name, sender_psid, entity) => {
-    switch (name) {
-        case "intents":
-            if (entity.value === 'doctors:doctors') {
-                let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
-                await callSendAPI(sender_psid, response1);
-                let title = "P-Covid Care";
-                let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
-                await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
-            }
-            break;
+// let handleEntity = async (name, sender_psid, entity) => {
+//     switch (name) {
+//         case "intents":
+//             if (entity.value === 'doctors:doctors') {
+//                 let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
+//                 await callSendAPI(sender_psid, response1);
+//                 let title = "P-Covid Care";
+//                 let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
+//                 await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
+//             }
+//             break;
         
-        case "info":
-            let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
-            await callSendAPI(sender_psid, response3);
-            await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
-        case "booking":
-            let response2 = { "text": `Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.` }
-            await callSendAPI(sender_psid, response2);
-            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
-        default:
-            let response4 = { "text": `Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:` }
-            await callSendAPI(sender_psid, response4);
-            await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
-    }
-};
+//         case "info":
+//             let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
+//             await callSendAPI(sender_psid, response3);
+//             await callSendAPIv2(sender_psid, "Thông tin website", "Thông tin website P-Covid Care", INFOWEBSITE_IMAGE_URL, INFOWEBSITE_URL);
+//         case "booking":
+//             let response2 = { "text": `Bạn đang cần đặt lịch khám bệnh, xem thêm hướng dẫn đặt lịch chi tiết ở link bên dưới nhé.` }
+//             await callSendAPI(sender_psid, response2);
+//             await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
+//         default:
+//             let response4 = { "text": `Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:` }
+//             await callSendAPI(sender_psid, response4);
+//             await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
+//     }
+// };
 
 let getWitEntities = () => {
     return new Promise((resolve, reject) => {
