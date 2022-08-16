@@ -121,18 +121,18 @@ async function handleMessage(sender_psid, received_message){
     //     return;
     // }
     //checking quick reply
-    if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
-        let payload = received_message.quick_reply.payload;
-        if (payload === "DOCTORS") {
-            await chatbotService.sendMessageReplyDoctors(sender_psid);
-            return;
-        }
-        if (payload === 'GUIDE_TO_USE'){
-            await chatbotService.handleGuideToUseBot(sender_psid);
-        }
-    }
+    // if (received_message && received_message.quick_reply && received_message.quick_reply.payload) {
+    //     let payload = received_message.quick_reply.payload;
+    //     if (payload === "DOCTORS") {
+    //         await chatbotService.sendMessageReplyDoctors(sender_psid);
+    //         return;
+    //     }
+    //     if (payload === 'GUIDE_TO_USE'){
+    //         await chatbotService.handleGuideToUseBot(sender_psid);
+    //     }
+    // }
     try {
-        const client = new Wit({accessToken});
+        const client = new Wit({accessToken : '4OGYTLYETC37REL2YXWTEFMMC73DK4DF'});
         const respone = await client.message(received_message,{});
         console.log(respone);
         if(respone){
