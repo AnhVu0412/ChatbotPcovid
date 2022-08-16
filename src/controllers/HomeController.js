@@ -181,7 +181,7 @@ const handleResponse = async (sender_psid, respone) => {
         }
     });
     switch(name){
-        case "intents":
+        case "doctors":
             if (entity.value === 'doctors') {
                 let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
                 await callSendAPI(sender_psid, response1);
