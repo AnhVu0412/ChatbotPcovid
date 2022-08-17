@@ -172,7 +172,7 @@ async function handleMessage(sender_psid, received_message) {
 }
 
 const handleResponse = async ( sender_psid, response) => {
-    // let name = undefined;
+    let name = undefined;
     let confidence = 0;
 
     Array(response).forEach(r => {
