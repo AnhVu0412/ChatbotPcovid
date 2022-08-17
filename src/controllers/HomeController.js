@@ -150,19 +150,19 @@ async function handleMessage(sender_psid, received_message) {
         const respone = await client.message(received_message.text, {});
         console.log(respone);
         if (respone) {
-            let name = "";
-            let entityCheck = {};
-            let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
-            for (let i = 0; i < arrPossibleEntity.length; i++) {
-                let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
-                if (entity && entity.confidence > 0.8) {
-                    name = arrPossibleEntity[i];
-                    entityCheck = entity;
-                    break;
-                }
-            }
-            await handleResponse(name, sender_psid, entityCheck, respone);
-            //handleResponse(sender_psid, respone);
+            // let name = "";
+            // let entityCheck = {};
+            // let arrPossibleEntity = [ 'intents', 'booking', 'info' ];
+            // for (let i = 0; i < arrPossibleEntity.length; i++) {
+            //     let entity = chatbotService.firstEntity(received_message.nlp, arrPossibleEntity[i]);
+            //     if (entity && entity.confidence > 0.8) {
+            //         name = arrPossibleEntity[i];
+            //         entityCheck = entity;
+            //         break;
+            //     }
+            // }
+            // await handleResponse(name, sender_psid, entityCheck, respone);
+            handleResponse(sender_psid, respone);
         }
     } catch (error) {
         if (error)
@@ -171,7 +171,7 @@ async function handleMessage(sender_psid, received_message) {
 
 }
 
-const handleResponse = async (name, sender_psid, entity, response) => {
+const handleResponse = async ( sender_psid, response) => {
     // let name = undefined;
     let confidence = 0;
 
@@ -183,7 +183,7 @@ const handleResponse = async (name, sender_psid, entity, response) => {
     });
     switch (name) {
         case "intents":
-            if (entity.value === 'doctors:doctors') {
+            if (entity.value === 'doctors') {
                 let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
                 await callSendAPI(sender_psid, response1);
                 let title = "P-Covid Care";
@@ -191,7 +191,6 @@ const handleResponse = async (name, sender_psid, entity, response) => {
                 await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
             }
             break;
-
         case "info":
             let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
             await callSendAPI(sender_psid, response3);
