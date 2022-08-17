@@ -171,13 +171,13 @@ const handleResponse = async ( sender_psid, response) => {
     });
     switch (name) {
         case "doctors":
-            if (entity.value === 'doctors') {
+            //if (entity.value === 'doctors') {
                 let response1 = { "text": `Bạn đang tìm kiếm thông tin về bác sĩ, xem thêm ở link bên dưới nhé.` }
                 await callSendAPI(sender_psid, response1);
                 let title = "P-Covid Care";
                 let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
                 await callSendAPIv2(sender_psid, title, subtitle, DOCTOR_IMAGE_URL, DOCTOR_URL);
-            }
+            //}
             break;
         case "info":
             let response3 = { "text": `Bạn đang tìm hiểu về thông tin website, xem thêm ở link bên dưới nhé.` }
