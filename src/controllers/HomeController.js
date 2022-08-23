@@ -10,7 +10,7 @@ const { Wit } = pkg
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
 
-const DOCTOR_IMAGE_URL = "https://bralowmedicalgroup.com/wp-content/uploads/2018/06/blog.jpg";
+const DOCTOR_IMAGE_URL = "https://bit.ly/3dNFpP2";
 const DOCTOR_URL = "http://localhost:9696/all-doctors";
 
 const BOOKING_IMAGE_URL = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";

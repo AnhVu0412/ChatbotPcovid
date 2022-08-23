@@ -331,7 +331,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                         "elements": [
                             {
                                 "title": "GS.TS Nguyễn Đình Tiến",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor.jpg",
+                                "image_url": "https://bit.ly/3AIwF5Z",
                                 "subtitle": "Tai-mũi-họng",
                                 "default_action": {
                                     "type": "web_url",
@@ -342,7 +342,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
 
                             {
                                 "title": "GS.TS Nguyễn Xuân Chinh",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-hoang-dinh-tung.jpg",
+                                "image_url": "https://bit.ly/3pB8FLE",
                                 "subtitle": "Phẫu thuật",
                                 "default_action": {
                                     "type": "web_url",
@@ -352,7 +352,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                             },
                             {
                                 "title": "GS.TS Nguyễn Văn Tuấn",
-                                "image_url": "https://doctorcare-v1.herokuapp.com/images/users/doctor-eric-pham.jpg",
+                                "image_url": "https://bit.ly/3cec005",
                                 "subtitle": "Gan thận",
                                 "default_action": {
                                     "type": "web_url",
