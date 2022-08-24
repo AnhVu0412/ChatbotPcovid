@@ -19,7 +19,7 @@ const BOOKING_URL = "http://localhost:9696/detail/doctor/2";
 const INFOWEBSITE_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
 const INFOWEBSITE_URL = "http://localhost:9696/";
 
-const DEFAULT_IMAGE_URL = "https://www.freseniusmedicalcare.com.vn/fileadmin/_processed_/5/4/csm_SPE001_service-support-employee_7614d83ad5.jpg";
+const DEFAULT_IMAGE_URL = "https://bit.ly/3dNFpP2";
 const DEFAULT_URL = "http://localhost:9696/";
 
 let getHomePage = (req, res) => {
