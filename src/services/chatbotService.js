@@ -298,7 +298,7 @@ let getStartedTemplate = (senderID) => {
                         {
                             "title": "Đặt lịch hẹn",
                             "type": "web_url",
-                            "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderID}`,
+                            "url": "http://localhost:9696/",
                             "webview_height_ratio": "tall",
                             "messenger_extensions": true,
                         },
