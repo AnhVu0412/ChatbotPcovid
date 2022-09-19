@@ -5,8 +5,6 @@ const accessToken = process.env.WIT_AI_SERVER_TOKEN;
 import pkg from 'node-wit';
 const { Wit } = pkg
 
-
-
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
 
@@ -187,9 +185,50 @@ const handleResponse = async ( sender_psid, response) => {
             await callSendAPI(sender_psid, response2);
             await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Hướng dẫn đặt lịch khám bệnh tại P-Covid Care", BOOKING_IMAGE_URL, BOOKING_URL);
             break;
-        default:
-            let response4 = { "text": `Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:` }
+        case "psychiatric":
+            let response4 = { "text": `-Bấm huyệt giảm đau nhức đầu
+            -Ngâm chân với nước nóng
+            -Xông các loại tinh dầu thiên nhiên
+            -Uống trà gừng
+            -Chế độ ăn uống ít đường
+            -Tập thể dục thường xuyên
+            -Bổ sung vitamin cần thiết.
+            ` }
             await callSendAPI(sender_psid, response4);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            break;
+        case 'otolaryngology':
+            let response6 = { "text": `-Súc miệng với nước muối ấm giúp giảm đau họng
+            -Mật ong và chanh giảm đau họng hiệu quả
+            -Giảm đau họng với trà thảo mộc
+            -Sử dụng máy tạo ẩm
+            -Trị đau họng bằng kẹo ngậm            
+            ` }
+            await callSendAPI(sender_psid, response6);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            break;
+        case 'pulmonology':
+            let response7 = { "text": `-Cần bình tĩnh, tập thở bằng cách hít thở sâu và thở ra chậm rãi.
+            -Thở mím môi.
+            -Hít hơi nước nóng, hoặc xịt thông mũi giúp đường thở thông thoáng hơn.
+            -Chọn tư thế ngồi thoải mái.
+            -Sử dụng quạt cầm tay để quạt không khí qua mũi và mặt có thể giúp loại bỏ cảm giác khó thở.                        
+            ` }
+            await callSendAPI(sender_psid, response7);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            break;
+        case 'musculoskeletal':
+            let response8 = { "text": `-Cố gắng thư giản để giảm bớt căng thẳng cơn đau
+            -Thường xuyên tập thể dục dù thời gian  ngắn hoặc đi bộ giúp cơ và khớp vận động tốt
+            -Trò chuyện với người thân, bạn bè những điều bạn thích khiến cảm thấy dể chịu và giảm đau
+            -Uống thuốc theo hướng dẫn của bác sĩ                                    
+            ` }
+            await callSendAPI(sender_psid, response8);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            break;
+        default:
+            let response5 = { "text": `Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:` }
+            await callSendAPI(sender_psid, response5);
             await callSendAPIv2(sender_psid, "Hỗ trợ khách hàng", "Thông tin hỗ trợ khách hàng P-Covid Care", DEFAULT_IMAGE_URL, DEFAULT_URL);
             break;
     }
