@@ -9,16 +9,30 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const WEBVIEW_URL = process.env.WEBVIEW_URL;
 
 const DOCTOR_IMAGE_URL = "https://bit.ly/3dNFpP2";
-const DOCTOR_URL = "http://localhost:9696/all-doctors";
+const DOCTOR_URL = "https://p-covid-care-g26.herokuapp.com/all-doctors";
 
 const BOOKING_IMAGE_URL = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
-const BOOKING_URL = "http://localhost:9696/detail/doctor/2";
+const BOOKING_URL = "https://p-covid-care-g26.herokuapp.com/detail/doctor/2";
 
 const INFOWEBSITE_IMAGE_URL = "https://cdn.pixabay.com/photo/2015/10/31/11/59/information-1015298_960_720.jpg";
-const INFOWEBSITE_URL = "http://localhost:9696/";
+const INFOWEBSITE_URL = "https://p-covid-care-g26.herokuapp.com/";
 
 const DEFAULT_IMAGE_URL = "https://bit.ly/3dNFpP2";
-const DEFAULT_URL = "http://localhost:9696/";
+const DEFAULT_URL = "https://p-covid-care-g26.herokuapp.com/";
+
+const BOOKING_IMAGE_URL_psychiatric = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_URL_psychiatric = "https://p-covid-care-g26.herokuapp.com/detail/doctor/3";
+
+
+const BOOKING_IMAGE_URL_otolaryngology = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_URL_otolaryngology = "https://p-covid-care-g26.herokuapp.com/detail/doctor/2";
+
+const BOOKING_IMAGE_URL_pulmonology = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_URL_pulmonology = "https://p-covid-care-g26.herokuapp.com/detail/doctor/16";
+
+
+const BOOKING_IMAGE_URL_musculoskeletal = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_URL_musculoskeletal = "https://p-covid-care-g26.herokuapp.com/detail/doctor/17";
 
 let getHomePage = (req, res) => {
     return res.render('homepage.ejs');
@@ -195,7 +209,7 @@ const handleResponse = async ( sender_psid, response) => {
             -Bổ sung vitamin cần thiết.
             ` }
             await callSendAPI(sender_psid, response4);
-            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL_psychiatric, BOOKING_URL_psychiatric);
             break;
         case 'otolaryngology':
             let response6 = { "text": `-Súc miệng với nước muối ấm giúp giảm đau họng
@@ -205,7 +219,7 @@ const handleResponse = async ( sender_psid, response) => {
             -Trị đau họng bằng kẹo ngậm            
             ` }
             await callSendAPI(sender_psid, response6);
-            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL_otolaryngology, BOOKING_URL_otolaryngology);
             break;
         case 'pulmonology':
             let response7 = { "text": `-Cần bình tĩnh, tập thở bằng cách hít thở sâu và thở ra chậm rãi.
@@ -215,7 +229,7 @@ const handleResponse = async ( sender_psid, response) => {
             -Sử dụng quạt cầm tay để quạt không khí qua mũi và mặt có thể giúp loại bỏ cảm giác khó thở.                        
             ` }
             await callSendAPI(sender_psid, response7);
-            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL_pulmonology, BOOKING_URL_pulmonology);
             break;
         case 'musculoskeletal':
             let response8 = { "text": `-Cố gắng thư giản để giảm bớt căng thẳng cơn đau
@@ -224,7 +238,7 @@ const handleResponse = async ( sender_psid, response) => {
             -Uống thuốc theo hướng dẫn của bác sĩ                                    
             ` }
             await callSendAPI(sender_psid, response8);
-            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL, BOOKING_URL);
+            await callSendAPIv2(sender_psid, "Đặt lịch khám bệnh", "Bác sĩ này chuyên khoa về tình trạng bệnh mà bạn tư vấn", BOOKING_IMAGE_URL_musculoskeletal, BOOKING_URL_musculoskeletal);
             break;
         default:
             let response5 = { "text": `Rất tiếc bot chưa được hướng dẫn để trả lời câu hỏi của bạn. Để được hỗ trợ, vui lòng truy câp:` }

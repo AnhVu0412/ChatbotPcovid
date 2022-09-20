@@ -5,7 +5,7 @@ const WIT_SERVER_TOKEN = process.env.WIT_AI_SERVER_TOKEN;
 const IMAGE_GET_STARTED = 'https://bit.ly/3y5ykzP';
 
 const DOCTOR_IMAGE_URL = "https://bralowmedicalgroup.com/wp-content/uploads/2018/06/blog.jpg";
-const DOCTOR_URL = "https://doctorcare-v1.herokuapp.com/";
+const DOCTOR_URL = "https://p-covid-care-g26.herokuapp.com/";
 
 const BOOKING_IMAGE_URL = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
 const BOOKING_URL = "https://doctorcare-v1.herokuapp.com/";
@@ -165,7 +165,7 @@ let handleGetStarted = (sender_psid) => {
     return new Promise(async (resolve, reject) => {
         try {
             let username = await getUserName(sender_psid);
-            let response1 = { "text": `Chào mừng bạn ${username} đến với P-Covid` }
+            let response1 = { "text": `Chào mừng ${username} đến với P-Covid` }
 
             let response2 = getStartedTemplate(sender_psid);
 
@@ -301,7 +301,7 @@ let getStartedTemplate = (senderID) => {
                             // "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderID}`,
                             // "webview_height_ratio": "tall",
                             // "messenger_extensions": true,
-                            "url": "http://localhost:9696/",
+                            "url": "https://p-covid-care-g26.herokuapp.com/",
                             "webview_height_ratio": "tall"
                         },
                         {
@@ -337,7 +337,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "subtitle": "Tai-mũi-họng",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "http://localhost:9696/detail/doctor/2",
+                                    "url": "https://p-covid-care-g26.herokuapp.com/detail/doctor/2",
                                     "webview_height_ratio": "tall"
                                 }
                             },
@@ -348,7 +348,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "subtitle": "Phẫu thuật",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "http://localhost:9696/detail/doctor/3",
+                                    "url": "https://p-covid-care-g26.herokuapp.com/detail/doctor/3",
                                     "webview_height_ratio": "tall"
                                 }
                             },
@@ -358,7 +358,7 @@ let sendMessageReplyDoctors = (sender_psid) => {
                                 "subtitle": "Gan thận",
                                 "default_action": {
                                     "type": "web_url",
-                                    "url": "http://localhost:9696/detail/doctor/17",
+                                    "url": "https://p-covid-care-g26.herokuapp.com/detail/doctor/17",
                                     "webview_height_ratio": "tall"
                                 }
                             },
