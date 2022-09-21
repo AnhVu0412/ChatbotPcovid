@@ -20,18 +20,18 @@ const INFOWEBSITE_URL = "https://p-covid-care-g26.herokuapp.com/";
 const DEFAULT_IMAGE_URL = "https://bit.ly/3dNFpP2";
 const DEFAULT_URL = "https://p-covid-care-g26.herokuapp.com/";
 
-const BOOKING_IMAGE_URL_psychiatric = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_IMAGE_URL_psychiatric = "shorturl.at/ijoY7";
 const BOOKING_URL_psychiatric = "https://p-covid-care-g26.herokuapp.com/detail/doctor/3";
 
 
-const BOOKING_IMAGE_URL_otolaryngology = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_IMAGE_URL_otolaryngology = "shorturl.at/aBU24";
 const BOOKING_URL_otolaryngology = "https://p-covid-care-g26.herokuapp.com/detail/doctor/2";
 
-const BOOKING_IMAGE_URL_pulmonology = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_IMAGE_URL_pulmonology = "shorturl.at/jQSY0";
 const BOOKING_URL_pulmonology = "https://p-covid-care-g26.herokuapp.com/detail/doctor/16";
 
 
-const BOOKING_IMAGE_URL_musculoskeletal = "http://ipright.vn/wp-content/uploads/2014/03/36322201-procedure-word-write-on-paper-Stock-Photo-1200x545_c.jpg";
+const BOOKING_IMAGE_URL_musculoskeletal = "hshorturl.at/ilNV4";
 const BOOKING_URL_musculoskeletal = "https://p-covid-care-g26.herokuapp.com/detail/doctor/17";
 
 let getHomePage = (req, res) => {

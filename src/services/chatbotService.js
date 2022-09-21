@@ -301,7 +301,7 @@ let getStartedTemplate = (senderID) => {
                             // "url": `${process.env.URL_WEB_VIEW_ORDER}/${senderID}`,
                             // "webview_height_ratio": "tall",
                             // "messenger_extensions": true,
-                            "url": "https://p-covid-care-g26.herokuapp.com/",
+                            "url": "https://p-covid-care-g26.herokuapp.com/all-doctors",
                             "webview_height_ratio": "tall"
                         },
                         {
