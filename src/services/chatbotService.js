@@ -445,7 +445,7 @@ let getBotMediaTemplate = () => {
     };
     return response;
 }
-
+// test
 module.exports = {
     getWitEntitiesWithExpression: getWitEntitiesWithExpression,
     handleGetStarted: handleGetStarted,
