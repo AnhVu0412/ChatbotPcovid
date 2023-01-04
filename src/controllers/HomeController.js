@@ -183,7 +183,7 @@ const handleResponse = async ( sender_psid, response) => {
     });
     switch (name) {
         case "doctors":
-                let response1 = { "text": `Bạn đang tìm kiếm tét, xem thêm ở link bên dưới nhé.` }
+                let response1 = { "text": `Bạn đang tìm kiếm bác sĩ, xem thêm ở link bên dưới nhé.` }
                 await callSendAPI(sender_psid, response1);
                 let title = "P-Covid Care";
                 let subtitle = 'Thông tin bác sĩ làm việc tại P-Covid Care';
